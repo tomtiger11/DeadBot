@@ -22,7 +22,7 @@ switch ($command) {
 		$days = $timeonline / 86400;
 		$timeonline = $timeonline % 86400;
 		$hour = $timeonline / 3600;
-		$timeonline = $timeonline % 86400;
+		$timeonline = $timeonline % 3600;
 		$mins = $timeonline / 60;
 		$timeonline = $timeonline % 60;
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": I have been connected for: ".round($days)." days, ".round($hour)." hours, ".round($mins)." minutes and ".round($timeonline)." seconds.\n");
