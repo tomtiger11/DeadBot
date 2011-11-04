@@ -3,7 +3,7 @@ switch ($command) {
 
 	case 'help':
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the valid commands that can be performed on me. Start all commands with 'deadbot'.\n");
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": about, status, random, date, password, welcome, gsearch, gresult, translate\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": about, status, calc, random, date, password, welcome, gsearch, gresult, translate\n");
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": For additional help please visit my GitHub page. For admin commands use 'deadbot adminhelp.\n");
 		break;
 		
@@ -268,6 +268,17 @@ switch ($command) {
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
 		}
+		break;
+		
+	case 'calc':
+		$calculate = explode('calc ', $data);
+		$calculate = $calculate[1];
+		$calculate = trim($calculate);
+		$calculate = preg_replace ('[^0-9\+-\*\/\(\) ]', '', $calculate);
+		echo "CALC:".$calculate;
+		eval("\$calculate = $calculate;");
+		echo "CALC:".$calculate;
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate."\n");
 		break;
 		
 	default:
