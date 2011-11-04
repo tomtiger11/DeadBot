@@ -10,7 +10,7 @@ switch ($command) {
 	case 'adminhelp':
 		if ($admin == 1) {
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the valid commands accessible by administrators only.\n");
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": addadmin (n), viewadmins (n), deleteadmin (n), shutdown (n), restart (n), echo (pm), raw (pm)\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": addadmin (n), viewadmins (n), deleteadmin (n), shutdown (n), restart (n), sync (n), echo (pm), raw (pm)\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": (n) = Can be run from within channel or private message. (pm) = Must be run through private message.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
@@ -246,7 +246,7 @@ switch ($command) {
 			if ($argv[1] == 'debug') {
 				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Switching debug mode to OFF\n");
 				fputs($socket, "QUIT :Requested by administrator\n");
-				shell_exec('screen  php /home/kloxo/httpd/default/irc/index.php');
+				shell_exec('screen php /home/kloxo/httpd/default/irc/index.php');
 				sleep(2);
 				die;
 			}else{
@@ -256,6 +256,16 @@ switch ($command) {
 				sleep(2);
 				die;
 			}
+		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+		}
+		break;
+		
+	case 'sync':
+		if ($admin == 1) {
+			shell_exec('cd /home/kloxo/httpd/default/irc/');
+			shell_exec('git pull');
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Synchronized with GitHub. A restart is recommended if the core file was modified.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
 		}
