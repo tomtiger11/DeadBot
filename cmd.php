@@ -261,7 +261,7 @@ switch ($command) {
 		}
 		break;
 		
-	case 'sync':
+	case 'update':
 		if ($admin == 1) {
 			echo shell_exec('cd /home/kloxo/httpd/default/irc/; /usr/local/bin/git pull');
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Synchronized with GitHub. A restart is recommended if the core file was modified.\n");
