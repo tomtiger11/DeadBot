@@ -263,8 +263,7 @@ switch ($command) {
 		
 	case 'sync':
 		if ($admin == 1) {
-			shell_exec('cd /home/kloxo/httpd/default/irc/');
-			shell_exec('git pull');
+			echo shell_exec('cd /home/kloxo/httpd/default/irc/; /usr/local/bin/git pull');
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Synchronized with GitHub. A restart is recommended if the core file was modified.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
