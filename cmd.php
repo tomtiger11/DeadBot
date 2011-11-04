@@ -188,7 +188,7 @@ switch ($command) {
 		$value3 = explode($value2.' ', $data);
 		$value3 = explode(' @', $value3[1]);
 		$value3 = $value3[0];
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": http://translate.google.co.uk/#".$value."|".$value2."|".$value3."\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": http://translate.google.co.uk/#".$value."|".$value2."|".urlencode($value3)."\n");
 		break;
 		
 	case 'addadmin':

@@ -70,9 +70,8 @@ while(1) {
 		}
 		
 		// Detect if message is private
-		if ($ex[2] == 'DeadBot') {
-			echo "Caught!";
-			$ex[2] = $recipient;
+		if ($ex[2] == 'deadbot') {
+			$ex[2] = substr(strtolower($recipient), 1);
 		}
 		
 		// Admin detection
