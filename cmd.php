@@ -275,9 +275,7 @@ switch ($command) {
 		$calculate = $calculate[1];
 		$calculate = trim($calculate);
 		$calculate = preg_replace ('[^0-9\+-\*\/\(\) ]', '', $calculate);
-		echo "CALC:".$calculate;
 		eval("\$calculate = $calculate;");
-		echo "CALC:".$calculate;
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate."\n");
 		break;
 		
