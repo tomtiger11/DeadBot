@@ -274,7 +274,10 @@ switch ($command) {
 		$calculate = explode('calc ', $data);
 		$calculate = $calculate[1];
 		$calculate = trim($calculate);
+		
 		$calculate = preg_replace ('[^0-9\+-\*\/\(\) ]', '', $calculate);
+		$letters = array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+		$calculate = str_replace($letters, '', $calculate);
 		
 		$calculateexplode = explode('/0', $calculate);
 		$calculateexplode2 = explode('/ 0', $calculate);
@@ -282,12 +285,6 @@ switch ($command) {
 			$calculateinfo = "(undefined)";
 		}else{
 			$calculateinfo = "";
-		}
-		
-		if (is_numeric($calculate)) {
-			eval("\$calculate = $calculate;");
-		}else{
-			$calculate = 'That is not numeric.';
 		}
 		
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate.$calculateinfo."\n");
