@@ -26,6 +26,9 @@ fputs($socket,"NS IDENTIFY somepassword\n");
 // Join channel
 fputs($socket,"JOIN #publicchat\n");
 
+// Get the admin file
+$adminfile = file_get_contents('./admins.txt');
+
 // Force an endless while
 while(1) {
  
@@ -77,7 +80,6 @@ while(1) {
 		}
 		
 		// Admin detection
-		$adminfile = file_get_contents('./admins.txt');
 		$adminarray = explode(substr($userinfo[0], 1), $adminfile);
 		if (isset($adminarray[1])) {
 			fputs($socket,"NS STATUS ".substr($userinfo[0], 1)."\n");
