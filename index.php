@@ -5,8 +5,9 @@
 ##### Created by Dead-i ######
 ##############################
 
-// Get all errors
-ini_set('error_reporting',E_ALL);
+// Require the configuration file
+// This should contain the $password
+require 'config.php';
 
 // Set no time limit; run forever
 set_time_limit(0);
@@ -20,7 +21,8 @@ $socket = fsockopen("irc.x10hosting.com", 6667);
 // Send auth info
 fputs($socket,"USER DeadBot deadi CM :DeadBot\n");
 fputs($socket,"NICK DeadBot\n");
- 
+fputs($socket,"NS IDENTIFY somepassword\n"); 
+
 // Join channel
 fputs($socket,"JOIN #publicchat\n");
 
