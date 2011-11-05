@@ -284,7 +284,11 @@ switch ($command) {
 			$calculateinfo = "";
 		}
 		
-		eval("\$calculate = $calculate;");
+		if (is_numeric($calculate)) {
+			eval("\$calculate = $calculate;");
+		}else{
+			$calculate = 'That is not numeric.';
+		}
 		
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate.$calculateinfo."\n");
 		break;
