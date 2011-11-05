@@ -275,8 +275,18 @@ switch ($command) {
 		$calculate = $calculate[1];
 		$calculate = trim($calculate);
 		$calculate = preg_replace ('[^0-9\+-\*\/\(\) ]', '', $calculate);
+		
+		$calculateexplode = explode('/0', $calculate);
+		$calculateexplode2 = explode('/ 0', $calculate);
+		if (isset($calculateexplode[1]) || isset($calculateexplode2[1])) {
+			$calculateinfo = "(undefined)";
+		}else{
+			$calculateinfo = "";
+		}
+		
 		eval("\$calculate = $calculate;");
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate."\n");
+		
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate.$calculateinfo."\n");
 		break;
 		
 	default:
