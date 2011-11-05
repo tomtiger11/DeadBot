@@ -92,6 +92,7 @@ while(1) {
 			$adminstatus = $adminstatus[0];
 			if ($adminstatus == '3') {
 				$admin = 1;
+				$this->$user = NULL;
 			}else{
 				$admin = 0;
 			}
