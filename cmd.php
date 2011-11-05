@@ -287,6 +287,8 @@ switch ($command) {
 			$calculateinfo = "";
 		}
 		
+		eval("\$calculate = $calculate;");
+		
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate.$calculateinfo."\n");
 		break;
 		
