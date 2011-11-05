@@ -100,11 +100,11 @@ while(1) {
 			
 			// Get the commands
 			include 'cmd.php';
-		
-			// Get the sayings
-			include 'sayings.php';
 			
 		}
+		
+		// Get the sayings
+		include 'sayings.php';
 		
 		// Admin echo command
 		if ($admin == 1) {
