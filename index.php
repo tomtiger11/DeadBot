@@ -82,13 +82,13 @@ while(1) {
 		// Admin detection
 		$adminarray = explode(substr($userinfo[0], 1), $adminfile);
 		if (isset($adminarray[1])) {
-			//fputs($socket,"NS STATUS ".substr($userinfo[0], 1)."\n");
+			fputs($socket,"NS STATUS ".substr($userinfo[0], 1)."\n");
 			$this->$user = $userinfo[0];
 		}else{
 			$admin = 0;
 		}
 		
-		if (isset($this->$user) && $userinfo[0] == ':NickServ') {
+		/*if (isset($this->$user) && $userinfo[0] == ':NickServ') {
 			$adminstatus = explode('STATUS '.$this->$user.' ', $data);
 			$adminstatus = $adminstatus[1];
 			$adminstatus = $adminstatus[0];
@@ -98,7 +98,7 @@ while(1) {
 			}else{
 				$admin = 0;
 			}
-		}
+		}*/
 		
 		// Get the entire command
 		$entirecommandraw = explode(' :', $data);
