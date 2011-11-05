@@ -80,9 +80,21 @@ while(1) {
 		$adminfile = file_get_contents('./admins.txt');
 		$adminarray = explode(substr($userinfo[0], 1), $adminfile);
 		if (isset($adminarray[1])) {
-			$admin = 1;
+			fputs($socket,"NS STATUS ".substr($userinfo[0], 1)."\n");
+			$this->$user = $userinfo[0];
 		}else{
 			$admin = 0;
+		}
+		
+		if (isset($this->$user) && $userinfo[0] == ':NickServ') {
+			$adminstatus = explode('STATUS '.$this->$user.' ', $data);
+			$adminstatus = $adminstatus[1];
+			$adminstatus = $adminstatus[0];
+			if ($adminstatus == '3') {
+				$admin = 1;
+			}else{
+				$admin = 0;
+			}
 		}
 		
 		// Get the entire command
