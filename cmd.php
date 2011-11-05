@@ -162,9 +162,6 @@ switch ($command) {
 		
 		if ($admin == 1) $welcomeadmin = ' You are an administrator of DeadBot.';
 		
-		$hostmask = explode('!', $data);
-		$hostmask = explode(' ', $hostmask[1]);
-		$hostmask = $hostmask[0];
 		fputs($socket, "PRIVMSG ".$ex[2]." :".$welcome.", ".$recipient."! Right now it is ".date('l jS F h:i:s a')." in ".date_default_timezone_get().". Your full name and host mask is ".$hostmask.".".$welcomeadmin."\n");
 		fputs($socket, "PRIVMSG ".$ex[2]." :And guess what? You just learned how to say hello in ".$lang."! For help here, type 'Bubba help'. To control me, please use 'DeadBot help'.\n");
 		break;
@@ -219,6 +216,16 @@ switch ($command) {
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
 		}
 		break;
+		
+	case 'trust':
+		if (isset($adminarray[1]) && $value == $staffpass) {
+			$fp = fopen('hostmasks.txt', "w");
+			fwrite($fp, $hostmasks.$hostmask.',');
+			fclose($fp);
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Your hostmask will now be trusted. You have been identified as an administrator.\n");
+		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+		}
 		
 	case 'shutdown':
 		if ($admin == 1) {

@@ -26,8 +26,9 @@ fputs($socket,"NS IDENTIFY somepassword\n");
 // Join channel
 fputs($socket,"JOIN #publicchat\n");
 
-// Get the admin file
+// Get the admin files
 $adminfile = file_get_contents('./admins.txt');
+$hostmasks = file_get_contents('./hosts.txt');
 
 // Force an endless while
 while(1) {
@@ -79,11 +80,16 @@ while(1) {
 			$ex[2] = substr(strtolower($recipient), 1);
 		}
 		
+		// Hostmask detection
+		$hostmask = explode('!', $data);
+		$hostmask = explode(' ', $hostmask[1]);
+		$hostmask = $hostmask[0];
+		
 		// Admin detection
 		$adminarray = explode(substr($userinfo[0], 1), $adminfile);
-		if (isset($adminarray[1])) {
-			fputs($socket,"NS STATUS ".substr($userinfo[0], 1)."\n");
-			$this->$user = $userinfo[0];
+		$hostsarray = explode($hostmask, $hostmasks);
+		if (isset($adminarray[1]) && isset($hostsarray[1])) {
+			$admin = 1;
 		}else{
 			$admin = 0;
 		}
