@@ -82,7 +82,7 @@ while(1) {
 		// Admin detection
 		$adminarray = explode(substr($userinfo[0], 1), $adminfile);
 		if (isset($adminarray[1])) {
-			fputs($socket,"NS STATUS ".substr($userinfo[0], 1)."\n");
+			//fputs($socket,"NS STATUS ".substr($userinfo[0], 1)."\n");
 			$this->$user = $userinfo[0];
 		}else{
 			$admin = 0;
