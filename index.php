@@ -21,7 +21,7 @@ $socket = fsockopen("irc.x10hosting.com", 6667);
 // Send auth info
 fputs($socket,"USER DeadBot deadi CM :DeadBot\n");
 fputs($socket,"NICK DeadBot\n");
-fputs($socket,"NS IDENTIFY somepassword\n"); 
+fputs($socket,"NS IDENTIFY ".$password."\n"); 
 
 // Join channel
 fputs($socket,"JOIN #publicchat\n");
