@@ -131,13 +131,12 @@ while(1) {
 			
 		}
 		
-		// End of flooding detection
-		}
-		$lastmsg = date('ymdHis');
-		
 		// Get the sayings
 		include 'sayings.php';
 		
+		// End of flooding detection
+		}
+		$lastmsg = date('ymdHis');
 		
 		// Admin echo command
 		if ($admin == 1) {
