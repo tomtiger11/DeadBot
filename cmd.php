@@ -78,14 +78,18 @@ switch ($command) {
 				$length = $length + 9;
 			}
 			
-			$count = 0;
-			while ($count < $value) {
-				$random = rand(0, $length);
-				$passwordgen = $passwordgen.$string[$random];
-				$count = $count + 1;
+			if ($value < 32) {
+				$count = 0;
+				while ($count < $value) {
+					$random = rand(0, $length);
+					$passwordgen = $passwordgen.$string[$random];
+					$count = $count + 1;
+				}
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The requested password has been private messaged to you.\n");
+				fputs($socket, "PRIVMSG ".substr($recipient, 1)." :Randomly chosen pasword in which is ".$value." characters long: ".$passwordgen."\n");
+			}else{
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The requested password is too long. Please shorten it.\n");
 			}
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The requested password has been private messaged to you.\n");
-			fputs($socket, "PRIVMSG ".substr($recipient, 1)." :Randomly chosen pasword in which is ".$value." characters long: ".$passwordgen."\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Sorry, the password command will only permit integers as lengths. You requested a password that is '".$value."' long.\n");
 		}
