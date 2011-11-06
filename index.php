@@ -28,7 +28,7 @@ fputs($socket,"JOIN #publicchat\n");
 
 // Get the admin files
 $adminfile = file_get_contents('./admins.txt');
-$hostmasks = file_get_contents('./hosts.txt');
+$hostmasks = file_get_contents('./hostmasks.txt');
 
 // Force an endless while
 while(1) {
