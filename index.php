@@ -116,26 +116,28 @@ while(1) {
 		
 		// Get the start message for each command
 		$startmsg = "PRIVMSG ".$ex[2]." ".$recipient.":";
-
-		// Attempt to detect excess flooding
-		$current = date('ymdHis');
-		if (($current - $lastmsg) > 2) {
 		
 		// If the bot was directed at
 		$direct = str_replace(array(chr(10), chr(13)), '', $ex[3]);
 		$direct = strtolower($direct);
 		if ($direct == ':deadbot') {
 			
-			// Get the commands
-			include 'cmd.php';
+			// Attempt to detect excess flooding
+			$current = date('ymdHis');
+			if (($current - $lastmsg) > 2) {
+			
+				// Get the commands
+				include 'cmd.php';
+			
+			// End of flooding detection
+			}
+			$lastmsg = date('ymdHis');
 			
 		}
 		
 		// Get the sayings
 		include 'sayings.php';
 		
-		// End of flooding detection
-		}
 		
 		// Admin echo command
 		if ($admin == 1) {
