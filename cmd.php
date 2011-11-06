@@ -195,7 +195,7 @@ switch ($command) {
 	case 'addadmin':
 		if ($admin == 1) {
 			$fp = fopen('admins.txt', "w");
-			fwrite($fp, $adminfile.$value.',');
+			fwrite($fp, substr($adminfile, 0, -1).$value.',');
 			fclose($fp);
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been successfully added to the admin log. Please run sync to activate this user.\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": You have been given administrative privledges. Do not abuse it or your privledges will be removed.\n");
