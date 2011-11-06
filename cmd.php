@@ -10,7 +10,7 @@ switch ($command) {
 	case 'adminhelp':
 		if ($admin == 1) {
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the valid commands accessible by administrators only.\n");
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": addadmin (n), viewadmins (n), deleteadmin (n), shutdown (n), restart (n), sync (n), echo (pm), raw (pm)\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": trust (n), addadmin (n), viewadmins (n), deleteadmin (n), shutdown (n), restart (n), sync (n), echo (pm), raw (pm)\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": (n) = Can be run from within channel or private message. (pm) = Must be run through private message.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
@@ -195,9 +195,9 @@ switch ($command) {
 	case 'addadmin':
 		if ($admin == 1) {
 			$fp = fopen('admins.txt', "w");
-			fwrite($fp, $adminfile.$value.',');
+			fwrite($fp, $this->$adminfile.$value.',');
 			fclose($fp);
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been successfully added to the admin log.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been successfully added to the admin log. Please run sync to activate this user.\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": You have been given administrative privledges. Do not abuse it or your privledges will be removed.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
@@ -206,15 +206,15 @@ switch ($command) {
 		
 	case 'viewadmins':
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the current administrators of DeadBot:\n");
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".str_replace(',', ', ', $adminfile)."\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".str_replace(',', ', ', $this->adminfile)."\n");
 		break;
 		
 	case 'deleteadmin':
 		if ($admin == 1) {
 			$fp = fopen('admins.txt', "w");
-			fwrite($fp, str_replace($value.',', '', $adminfile));
+			fwrite($fp, str_replace($value.',', '', $this->$adminfile));
 			fclose($fp);
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been deleted from the admin log.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been deleted from the admin log. Please run sync to deactivate this account.\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": If you did something bad, shame on you! :P\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
@@ -224,9 +224,19 @@ switch ($command) {
 	case 'trust':
 		if (isset($adminarray[1]) && $value == $staffpass) {
 			$fp = fopen('hostmasks.txt', "w");
-			fwrite($fp, $hostmasks.$hostmask.',');
+			fwrite($fp, $this->$hostmasks.$hostmask.',');
 			fclose($fp);
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Your hostmask will now be trusted. You have been identified as an administrator.\n");
+		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+		}
+		break;
+		
+	case 'sync':
+		if ($admin == 1) {
+			$this->$adminfile = file_get_contents('./admins.txt');
+			$this->$hostmasks = file_get_contents('./hostmasks.txt');
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Admin levels synchronized.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
 		}
