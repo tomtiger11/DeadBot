@@ -119,7 +119,7 @@ while(1) {
 		
 		// Attempt to detect excess flooding
 		$current = date('ymdHis');
-		if (($current - $lastmsg) > 2) {
+		if (($current - $lastmsg) > 2 && $abuser != $userinfo[0]) {
 		
 		// If the bot was directed at
 		$direct = str_replace(array(chr(10), chr(13)), '', $ex[3]);
@@ -137,6 +137,7 @@ while(1) {
 		// End of flooding detection
 		}
 		$lastmsg = date('ymdHis');
+		$abuser = $userinfo[0];
 		
 		// Admin echo command
 		if ($admin == 1) {
