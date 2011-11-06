@@ -206,7 +206,7 @@ switch ($command) {
 		
 	case 'viewadmins':
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the current administrators of DeadBot:\n");
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".str_replace(',', ', ', $this->adminfile)."\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".str_replace(',', ', ', $adminfile)."\n");
 		break;
 		
 	case 'deleteadmin':
