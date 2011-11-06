@@ -91,7 +91,7 @@ switch ($command) {
 				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The requested password is too long. Please shorten it.\n");
 			}
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Sorry, the password command will only permit integers as lengths. You requested a password that is '".$value."' long.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Sorry, the password command will only permit positive integers as lengths. You requested a password that is '".$value."' long.\n");
 		}
 		$password = '';
 		break;
