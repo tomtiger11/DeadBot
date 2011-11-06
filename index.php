@@ -30,6 +30,8 @@ fputs($socket,"JOIN #publicchat\n");
 $adminfile = file_get_contents('./admins.txt');
 $hostmasks = file_get_contents('./hostmasks.txt');
 
+$current = date('ymdHis');
+
 // Force an endless while
 while(1) {
  
@@ -115,6 +117,10 @@ while(1) {
 		// Get the start message for each command
 		$startmsg = "PRIVMSG ".$ex[2]." ".$recipient.":";
 
+		// Attempt to detect excess flooding
+		$current = date('ymdHis');
+		if (($current - $lastmsg) > 2) {
+		
 		// If the bot was directed at
 		$direct = str_replace(array(chr(10), chr(13)), '', $ex[3]);
 		$direct = strtolower($direct);
@@ -127,6 +133,9 @@ while(1) {
 		
 		// Get the sayings
 		include 'sayings.php';
+		
+		// End of flooding detection
+		}
 		
 		// Admin echo command
 		if ($admin == 1) {
