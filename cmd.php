@@ -163,8 +163,8 @@ switch ($command) {
 		if ($admin == 1) $welcomeadmin = ' You are an administrator of DeadBot.';
 		
 		$welcomehost = explode('!', $data);
-		$welcomehost = explode(' ', $hostmask[1]);
-		$welcomehost = $hostmask[0];
+		$welcomehost = explode(' ', $welcomehost[1]);
+		$welcomehost = $welcomehost[0];
 		
 		fputs($socket, "PRIVMSG ".$ex[2]." :".$welcome.", ".substr($recipient, 1)."! Right now it is ".date('l jS F h:i:s a')." in ".date_default_timezone_get().". Your full name and host mask is ".$welcomehost.".".$welcomeadmin."\n");
 		fputs($socket, "PRIVMSG ".$ex[2]." :And guess what? You just learned how to say hello in ".$lang."! For help here, type 'Bubba help'. To control me, please use 'DeadBot help'.\n");
