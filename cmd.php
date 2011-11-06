@@ -201,7 +201,9 @@ switch ($command) {
 			$fp = fopen('admins.txt', "w");
 			fwrite($fp, substr($adminfile, 0, -1).$value.',');
 			fclose($fp);
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been successfully added to the admin log. Please run sync to activate this user.\n");
+			$adminfile = file_get_contents('./admins.txt');
+			$hostmasks = file_get_contents('./hostmasks.txt');
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been successfully added to the admin log.\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": You have been given administrative privledges. Do not abuse it or your privledges will be removed.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
@@ -218,7 +220,9 @@ switch ($command) {
 			$fp = fopen('admins.txt', "w");
 			fwrite($fp, str_replace($value.',', '', $adminfile));
 			fclose($fp);
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been deleted from the admin log. Please run sync to deactivate this account.\n");
+			$adminfile = file_get_contents('./admins.txt');
+			$hostmasks = file_get_contents('./hostmasks.txt');
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been deleted from the admin log.\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": If you did something bad, shame on you! :P\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
@@ -230,6 +234,8 @@ switch ($command) {
 			$fp = fopen('hostmasks.txt', "w");
 			fwrite($fp, $hostmasks.$hostmask.',');
 			fclose($fp);
+			$adminfile = file_get_contents('./admins.txt');
+			$hostmasks = file_get_contents('./hostmasks.txt');
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Your hostmask will now be trusted. You have been identified as an administrator.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
