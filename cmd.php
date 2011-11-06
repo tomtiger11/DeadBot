@@ -78,7 +78,7 @@ switch ($command) {
 				$length = $length + 9;
 			}
 			
-			if ($value < 32) {
+			if ($value < 24) {
 				$count = 0;
 				while ($count < $value) {
 					$random = rand(0, $length);
