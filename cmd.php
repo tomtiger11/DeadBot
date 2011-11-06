@@ -195,7 +195,7 @@ switch ($command) {
 	case 'addadmin':
 		if ($admin == 1) {
 			$fp = fopen('admins.txt', "w");
-			fwrite($fp, $this->$adminfile.$value.',');
+			fwrite($fp, $adminfile.$value.',');
 			fclose($fp);
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been successfully added to the admin log. Please run sync to activate this user.\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": You have been given administrative privledges. Do not abuse it or your privledges will be removed.\n");
@@ -212,7 +212,7 @@ switch ($command) {
 	case 'deleteadmin':
 		if ($admin == 1) {
 			$fp = fopen('admins.txt', "w");
-			fwrite($fp, str_replace($value.',', '', $this->$adminfile));
+			fwrite($fp, str_replace($value.',', '', $adminfile));
 			fclose($fp);
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been deleted from the admin log. Please run sync to deactivate this account.\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": If you did something bad, shame on you! :P\n");
@@ -224,7 +224,7 @@ switch ($command) {
 	case 'trust':
 		if (isset($adminarray[1]) && $value == $staffpass) {
 			$fp = fopen('hostmasks.txt', "w");
-			fwrite($fp, $this->$hostmasks.$hostmask.',');
+			fwrite($fp, $hostmasks.$hostmask.',');
 			fclose($fp);
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Your hostmask will now be trusted. You have been identified as an administrator.\n");
 		}else{
@@ -234,8 +234,8 @@ switch ($command) {
 		
 	case 'sync':
 		if ($admin == 1) {
-			$this->$adminfile = file_get_contents('./admins.txt');
-			$this->$hostmasks = file_get_contents('./hostmasks.txt');
+			$adminfile = file_get_contents('./admins.txt');
+			$hostmasks = file_get_contents('./hostmasks.txt');
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Admin levels synchronized.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
