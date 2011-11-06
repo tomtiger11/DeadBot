@@ -82,6 +82,7 @@ while(1) {
 		
 		// Hostmask detection
 		$hostmask = explode('!', $data);
+		$hostmask = explode('@', $hostmask[1]);
 		$hostmask = explode(' ', $hostmask[1]);
 		$hostmask = $hostmask[0];
 		
