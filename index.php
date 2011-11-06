@@ -121,7 +121,7 @@ while(1) {
 		if ($direct == ':deadbot') {
 			
 			// Get the commands
-			include 'cmd.php';
+			//include 'cmd.php';
 			
 		}
 		
