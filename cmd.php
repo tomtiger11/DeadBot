@@ -17,6 +17,24 @@ switch ($command) {
 		}
 		break;
 	
+	case 'protect':
+	case 'deprotect':
+	case 'op':
+	case 'deop':
+	case 'halfop':
+	case 'dehalfop':
+	case 'voice':
+	case 'devoice':
+	case 'kick':
+	case 'ban':
+		if ($admin == 1) {
+			if ($value == '') $value = substr($userinfo[0], 1);
+			fputs($socket, "CS ".$command." ".$ex[2]." ".$value."\n");
+		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+		}
+		break;
+		
 	case 'status':
 		$timeonline = time() - $startseconds;
 		$days = $timeonline / 86400;
