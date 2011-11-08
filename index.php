@@ -170,7 +170,7 @@ while(1) {
 		}
 		
 		// If DeadBot gets a permission denied error
-		if ($ex[2] == 'DeadBot' && $ex[3] == ':Permission') {
+		if ($ex[2] == 'DeadBot' && ($ex[3] == ':Permission' || $ex[3] == ':Access')) {
 			fputs($socket,"PRIVMSG ".$channel." :I was instructed to run a command that I could not perform; I had insufficient priviledges on the specific channel.\n");
 		}
 		
