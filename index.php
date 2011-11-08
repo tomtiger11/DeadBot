@@ -169,11 +169,6 @@ while(1) {
 			fputs($socket,"JOIN #publicchat\n");
 		}
 		
-		// Auto-voice anyone joining #paidhosting
-		if ($ex[1] == 'JOIN' && $ex[2] == ':#paidhosting') {
-			fputs($socket, "MODE ".substr($ex[2], 1)." +v ".substr($userinfo[0], 1)."\n");
-		}
-		
 	}
  
 }
