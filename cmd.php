@@ -31,6 +31,7 @@ switch ($command) {
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
 		}
+		$channel = $ex[2];
 		break;
 		
 	case 'status':

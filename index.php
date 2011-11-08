@@ -169,6 +169,11 @@ while(1) {
 			fputs($socket,"JOIN #publicchat\n");
 		}
 		
+		// If DeadBot gets a permission denied error
+		if ($ex[2] == 'DeadBot' && $ex[3] == ':Permission' && $ex[4] == 'denied.') {
+			fputs($socket,"PRIVMSG ".$channel." :I was instructed to run a command that I could not perform; I had insufficient priviledges on the specific channel.\n");
+		}
+		
 	}
  
 }
