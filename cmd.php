@@ -16,9 +16,7 @@ switch ($command) {
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
 		}
 		break;
-	
-	case 'protect':
-	case 'deprotect':
+		
 	case 'op':
 	case 'deop':
 	case 'halfop':
