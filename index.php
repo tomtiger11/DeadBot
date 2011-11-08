@@ -23,8 +23,9 @@ fputs($socket,"USER DeadBot deadi CM :DeadBot\n");
 fputs($socket,"NICK DeadBot\n");
 fputs($socket,"NS IDENTIFY ".$password."\n"); 
 
-// Join channel
+// Join channels
 fputs($socket,"JOIN #publicchat\n");
+fputs($socket,"JOIN #paidhosting\n");
 
 // Get the admin files
 $adminfile = file_get_contents('./admins.txt');
@@ -166,6 +167,11 @@ while(1) {
 		if (isset($kick[1])) {
 			$kickedby = explode('!', $data);
 			fputs($socket,"JOIN #publicchat\n");
+		}
+		
+		// Auto-voice anyone joining #paidhosting
+		if ($ex[1] == 'JOIN' && $ex[2] == ':#paidhosting') {
+			fputs($socket, "MODE ".substr($ex[2], 1)." +v ".substr($userinfo[0], 1)."\n");
 		}
 		
 	}
