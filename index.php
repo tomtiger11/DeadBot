@@ -124,7 +124,7 @@ while(1) {
 			
 			// Attempt to detect excess flooding
 			$current = date('ymdHis');
-			if (($current - $lastmsg) > 2 && $abuser != $userinfo[0]) {
+			if (!(($current - $lastmsg) < 1 && $abuser == $userinfo[0])) {
 				
 				// Get the commands
 				include 'cmd.php';
