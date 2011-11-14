@@ -13,34 +13,40 @@ require 'config.php';
 ## Functions ###################
 ################################
 
-function raw($message) {
-	fputs($socket, $message."\n");
+class functions {
+
+	function raw($message) {
+		fputs($socket, $message."\n");
+	}
+	
+	function sync() {
+		$adminfile = file_get_contents('./admins.txt');
+		$hostmasks = file_get_contents('./hostmasks.txt');
+	}
+	
+	function startup() {
+		require 'config.php';
+		set_time_limit(0);
+		$startseconds = time();
+		$current = date('ymdHis');
+		$socket = fsockopen($network, 6667);
+		$f->raw("USER ".$nick." ".$name." CM :".$nick);
+		$f->raw("NICK ".$nick);
+		$f->raw("JOIN ".$channel1);
+		$f->raw("JOIN ".$channel2);
+		//sync();
+		echo "Bot Started";
+	}
+	
 }
 
-function sync() {
-	$adminfile = file_get_contents('./admins.txt');
-	$hostmasks = file_get_contents('./hostmasks.txt');
-}
-
-function startup() {
-	require 'config.php';
-	set_time_limit(0);
-	$startseconds = time();
-	$current = date('ymdHis');
-	$socket = fsockopen($network, 6667);
-	raw("USER ".$nick." ".$name." CM :".$nick);
-	raw("NICK ".$nick);
-	raw("JOIN ".$channel1);
-	raw("JOIN ".$channel2);
-	//sync();
-	echo "Bot Started";
-}
+$f = new functions();
 
 ################################
 ## Scripting ###################
 ################################
 
-startup();
+$f->startup();
 
 // Force an endless while
 while(1) {
