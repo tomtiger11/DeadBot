@@ -6,22 +6,41 @@
 ## See README.md for info and license ##
 ########################################
 
-// Include the functions file to give accessibility for core files
-require 'functions.php';
-
-// Run the script startup commands
-//startup();
+// Include the configuration file to give core information
 require 'config.php';
-set_time_limit(0);
-$startseconds = time();
-$current = date('ymdHis');
-$socket = fsockopen('irc.x10hosting.com', 6667);
-fputs($socket,"USER ".$nick." ".$name." CM :".$nick."\n");
-fputs($socket,"NICK ".$nick."\n");
-fputs($socket,"JOIN ".$channel1."\n");
-fputs($socket,"JOIN ".$channel2."\n");
-sync();
-echo "Bot Started";
+
+################################
+## Functions ###################
+################################
+
+function raw($message) {
+	fputs($socket, $message."\n");
+}
+
+function sync() {
+	$adminfile = file_get_contents('./admins.txt');
+	$hostmasks = file_get_contents('./hostmasks.txt');
+}
+
+function startup() {
+	require 'config.php';
+	set_time_limit(0);
+	$startseconds = time();
+	$current = date('ymdHis');
+	$socket = fsockopen($network, 6667);
+	raw("USER ".$nick." ".$name." CM :".$nick);
+	raw("NICK ".$nick);
+	raw("JOIN ".$channel1);
+	raw("JOIN ".$channel2);
+	//sync();
+	echo "Bot Started";
+}
+
+################################
+## Scripting ###################
+################################
+
+startup();
 
 // Force an endless while
 while(1) {
