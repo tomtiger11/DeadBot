@@ -12,15 +12,14 @@ require 'functions.php';
 // Run the script startup commands
 //startup();
 require 'config.php';
-
 set_time_limit(0);
 $startseconds = time();
 $current = date('ymdHis');
-$socket = fsockopen($network, 6667);
-raw("USER ".$nick." ".$name." CM :".$nick);
-raw("NICK ".$nick);
-raw("JOIN ".$channel1);
-raw("JOIN ".$channel2);
+$socket = fsockopen('irc.x10hosting.com', 6667);
+fputs($socket,"USER ".$nick." ".$name." CM :".$nick."\n");
+fputs($socket,"NICK ".$nick."\n");
+fputs($socket,"JOIN ".$channel1."\n");
+fputs($socket,"JOIN ".$channel2."\n");
 sync();
 echo "Bot Started";
 
