@@ -5,6 +5,8 @@
 ##### Important core bot functions #####
 ########################################
 
+require 'config.php';
+
 function raw($message) {
 	fputs($socket, $message."\n");
 }
