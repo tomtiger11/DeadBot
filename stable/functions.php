@@ -17,6 +17,7 @@ function sync() {
 }
 
 function startup() {
+	require 'config.php';
 	set_time_limit(0);
 	$startseconds = time();
 	$current = date('ymdHis');
