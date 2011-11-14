@@ -20,6 +20,12 @@ while(1) {
 
 	while($data = fgets($socket, 522)) {
 		
+		// Flush, update, echo data
+		echo nl2br($data);
+		flush();
+		
+		// Play ping-pong to keep the bot active
+		if($ex[0] == "PING"){ fputs($socket, "PONG ".$ex[1]."\n"); }
 		
 	}
 	
