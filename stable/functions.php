@@ -26,4 +26,5 @@ function startup() {
 	raw("JOIN ".$channel1);
 	raw("JOIN ".$channel2);
 	sync();
+	echo "Bot Started";
 }
