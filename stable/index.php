@@ -10,7 +10,19 @@
 require 'functions.php';
 
 // Run the script startup commands
-startup();
+//startup();
+require 'config.php';
+
+set_time_limit(0);
+$startseconds = time();
+$current = date('ymdHis');
+$socket = fsockopen($network, 6667);
+raw("USER ".$nick." ".$name." CM :".$nick);
+raw("NICK ".$nick);
+raw("JOIN ".$channel1);
+raw("JOIN ".$channel2);
+sync();
+echo "Bot Started";
 
 // Force an endless while
 while(1) {
