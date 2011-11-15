@@ -26,6 +26,3 @@ while(1) {
 	}
 	
 }
-
-// Include the core functions required for the bot to function
-require 'functions.php';
