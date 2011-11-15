@@ -9,6 +9,9 @@
 // Include the configuration file to give core information
 require 'config.php';
 
+// Include the core functions required for the bot to function
+require 'functions.php';
+
 startup();
 
 // Force an endless while
