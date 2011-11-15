@@ -12,6 +12,15 @@ require 'config.php';
 // Include the core functions required for the bot to function
 require 'functions.php';
 
+set_time_limit(0);
+$startseconds = time();
+$current = date('ymdHis');
+$socket = fsockopen($network, 6667);
+raw("USER ".$nick." ".$name." CM :".$nick);
+raw("NICK ".$nick);
+raw("JOIN ".$channel1);
+raw("JOIN ".$channel2);
+
 startup();
 
 // Force an endless while

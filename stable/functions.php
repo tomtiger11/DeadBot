@@ -18,22 +18,3 @@ function sync() {
 	global $adminfile;
 	global $hostmasks;
 }
-
-function startup() {
-	global $network;
-	global $nick;
-	global $name;
-	global $channel1;
-	global $channel2;
-	set_time_limit(0);
-	$startseconds = time();
-	$current = date('ymdHis');
-	$socket = fsockopen($network, 6667);
-	raw("USER ".$nick." ".$name." CM :".$nick);
-	raw("NICK ".$nick);
-	raw("JOIN ".$channel1);
-	raw("JOIN ".$channel2);
-	sync();
-	global $socket;
-	echo "Bot Started";
-}
