@@ -23,19 +23,33 @@ raw("NS IDENTIFY ".$password);
 raw("JOIN ".$channel1);
 raw("JOIN ".$channel2);
 
+// Detect debug mode
+if ($argv[1] == 'debug') $debug = 1;
+
+// Synchronize files
+sync();
+
 // Force an endless while
 while(1) {
 
 	while($data = fgets($socket, 522)) {
 		
 		// Flush, update, echo data
-		echo nl2br($data);
+		if (isset($debug)) echo nl2br($data);
 		flush();
 		
-		// Play ping-pong to keep the bot active
-		if($ex[0] == "PING") {
-			raw("PONG ".$ex[1]);
+		// Separate all data
+		$ex = explode(' ', $data);
+		
+		// Detect if deadbot was directed toward
+		if (detectrecipient() == 'deadbot') {
+			
+			// Magic
+			
 		}
+		
+		// Play ping-pong to keep the bot active
+		if($ex[0] == "PING") raw("PONG ".$ex[1]);
 		
 	}
 	

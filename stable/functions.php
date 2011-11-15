@@ -18,3 +18,9 @@ function sync() {
 	global $adminfile;
 	global $hostmasks;
 }
+
+function detectrecipient() {
+	global $ex;
+	$direct = strtolower(str_replace(array(chr(10), chr(13)), '', $ex[3]));
+	return substr($direct, 1);
+}
