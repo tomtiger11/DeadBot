@@ -21,8 +21,6 @@ raw("NICK ".$nick);
 raw("JOIN ".$channel1);
 raw("JOIN ".$channel2);
 
-startup();
-
 // Force an endless while
 while(1) {
 
@@ -33,7 +31,9 @@ while(1) {
 		flush();
 		
 		// Play ping-pong to keep the bot active
-		if($ex[0] == "PING") { fputs($socket, "PONG ".$ex[1]."\n"); }
+		if($ex[0] == "PING") {
+			raw("PONG ".$ex[1]);
+		}
 		
 	}
 	
