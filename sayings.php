@@ -17,6 +17,7 @@ switch (strtolower($entirecommandraw)) {
 		fputs($socket, "PART ".$ex[2]."\n");
 		sleep (6);
 		fputs($socket, "JOIN ".$ex[2]."\n");
+		sleep (1);
 		fputs($socket, "PRIVMSG ".$ex[2]." :Healed! :P\n");
 		break;
 		
