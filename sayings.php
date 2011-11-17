@@ -13,12 +13,17 @@ switch (strtolower($entirecommandraw)) {
 		break;
 		
 	case 'deadbot: bang!':
-		fputs($socket, "PRIVMSG ".$ex[2]." :Aaaahhh!\n");
-		fputs($socket, "PART ".$ex[2]."\n");
-		sleep (6);
-		fputs($socket, "JOIN ".$ex[2]."\n");
-		sleep (1);
-		fputs($socket, "PRIVMSG ".$ex[2]." :Healed! :P\n");
-		break;
+		$random = rand(1, 2);
+		if ($random == 1) { 
+			fputs($socket, "PRIVMSG ".$ex[2]." :Aaaahhh!\n");
+			fputs($socket, "PART ".$ex[2]."\n");
+			sleep (6);
+			fputs($socket, "JOIN ".$ex[2]."\n");
+			sleep (1);
+			fputs($socket, "PRIVMSG ".$ex[2]." :Healed! :P\n");
+		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." :Dodged! :P\n");
+		}
+			break;
 		
 }
