@@ -88,7 +88,7 @@ while(1) {
 		fclose($fp);
 		
 		if ($voicetime == date('His')) {
-			fputs($socket, "MODE ".$ex[2]." +v ".$csv1[1]."\n");
+			fputs($socket, "MODE ".$ex[2]." +v ".$voiceuser."\n");
 			$voicetime = '';
 		}
 		
