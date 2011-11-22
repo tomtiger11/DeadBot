@@ -89,7 +89,7 @@ while(1) {
 		fclose($fp);
 		
 		if ($voicetime == date('His')) {
-			echo "\n:::Communicating Voice :::\n";
+			echo "<br>:::Communicating Voice :::<br>";
 			fputs($socket, "MODE ".$ex[2]." +v ".$voiceuser."\n");
 			$voicetime = '';
 		}
