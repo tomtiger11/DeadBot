@@ -58,42 +58,6 @@ while(1) {
 		// Get the user's name; useful in many purposes
 		$userinfo = explode("!", $ex[0]);
 		
-		// General flood protection for #paidhosting
-		$fp = file_get_contents('last.csv');
-		$fpresult = explode(',', 'last.csv');
-		foreach ($fpresult as $fpvalue) {
-			$count++;
-			$variable = 'csv'.$count;
-			$$variable = $fpvalue;
-		}
-		
-		$fp = fopen('last.csv', "w");
-		
-		$csv1 = $csv3;
-		$csv2 = $csv4;
-		$csv3 = $csv5;
-		$csv4 = $csv6;
-		$csv5 = date('His');
-		$csv6 = substr($userinfo[0], 1);
-		fwrite($fp, $csv1.','.$csv2.','.$csv3.','.$csv4.','.$csv5.','.$csv6);
-		
-		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1 - $csv3 - $csv5) <= 2 && $csv1 == $csv3 && $csv2 == $csv6) {
-			fputs($socket, "MODE ".$ex[2]." -v ".$csv2."\n");
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv2.": You have been devoiced 15 seconds for flooding.\n");
-			$voicetime = date('His') + 15;
-			$voiceuser = $csv2;
-			fwrite($fp, '');
-			sleep(1);
-		}
-		
-		fclose($fp);
-		
-		if ((date('His') - $voicetime) <= 17 && (date('His') - $voicetime) == 15 && $voicetime != '') {
-			echo "<br>:::Communicating Voice :::<br>";
-			fputs($socket, "MODE ".$ex[2]." +v ".$voiceuser."\n");
-			$voicetime = '';
-		}
-		
 		// Get the value if any
 		$value = str_replace(array(chr(10), chr(13)), '', $ex[5]);
 		if ($value == '@') $value = '';
@@ -132,6 +96,42 @@ while(1) {
 			$admin = 1;
 		}else{
 			$admin = 0;
+		}
+		
+		// General flood protection for #paidhosting
+		$fp = file_get_contents('last.csv');
+		$fpresult = explode(',', 'last.csv');
+		foreach ($fpresult as $fpvalue) {
+			$count++;
+			$variable = 'csv'.$count;
+			$$variable = $fpvalue;
+		}
+		
+		$fp = fopen('last.csv', "w");
+		
+		$csv1 = $csv3;
+		$csv2 = $csv4;
+		$csv3 = $csv5;
+		$csv4 = $csv6;
+		$csv5 = date('His');
+		$csv6 = substr($userinfo[0], 1);
+		fwrite($fp, $csv1.','.$csv2.','.$csv3.','.$csv4.','.$csv5.','.$csv6);
+		
+		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1 - $csv3 - $csv5) <= 2 && $csv1 == $csv3 && $csv2 == $csv6 && $admin != 1) {
+			fputs($socket, "MODE ".$ex[2]." -v ".$csv2."\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv2.": You have been devoiced 15 seconds for flooding.\n");
+			$voicetime = date('His') + 15;
+			$voiceuser = $csv2;
+			fwrite($fp, '');
+			sleep(1);
+		}
+		
+		fclose($fp);
+		
+		if ((date('His') - $voicetime) <= 17 && (date('His') - $voicetime) == 15 && $voicetime != '') {
+			echo "<br>:::Communicating Voice :::<br>";
+			fputs($socket, "MODE ".$ex[2]." +v ".$voiceuser."\n");
+			$voicetime = '';
 		}
 		
 		/*if (isset($this->$user) && $userinfo[0] == ':NickServ') {
