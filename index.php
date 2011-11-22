@@ -69,7 +69,7 @@ while(1) {
 		
 		$fp = fopen('last.csv', "w");
 		
-		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1 - $csv3 - $csv5) <= 4 && $csv1 == $csv3 && $csv2 == $csv6) {
+		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1 - $csv3 - $csv5) <= 2 && $csv1 == $csv3 && $csv2 == $csv6) {
 			fputs($socket, "MODE ".$ex[2]." -v ".$csv2."\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv2.": You have been devoiced 15 seconds for flooding.\n");
 			$voicetime = date('His') + 15;
