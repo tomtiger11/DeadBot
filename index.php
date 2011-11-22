@@ -59,7 +59,7 @@ while(1) {
 		$userinfo = explode("!", $ex[0]);
 		
 		// General flood protection for #paidhosting
-		$fp = fopen("widgets.csv", "r");
+		$fp = fopen("last.csv", "r");
 		while (!feof($fp) ) {
 			$count++;
 			$variable = 'csv'.$count;
