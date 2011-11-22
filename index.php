@@ -88,7 +88,7 @@ while(1) {
 		
 		fclose($fp);
 		
-		if ((date('His') - $voicetime) <= 2 && $voicetime != '') {
+		if ((date('His') - $voicetime) <= 17 && (date('His') - $voicetime) == 15 && $voicetime != '') {
 			echo "<br>:::Communicating Voice :::<br>";
 			fputs($socket, "MODE ".$ex[2]." +v ".$voiceuser."\n");
 			$voicetime = '';
