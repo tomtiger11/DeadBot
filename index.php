@@ -55,6 +55,40 @@ while(1) {
 		// Say something in the channel
 		$command = str_replace(array(chr(10), chr(13)), '', $ex[4]);
 		
+		// Get the user's name; useful in many purposes
+		$userinfo = explode("!", $ex[0]);
+		
+		// General flood protection for #paidhosting
+		$fp = fopen("widgets.csv", "r");
+		while (!feof($fp) ) {
+			$count++;
+			$variable = 'csv'.$count;
+			$$variable = fgetcsv($fp, 1024);
+		}
+		
+		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1[0] - $csv2[0] - $csv3[0]) <= 4 && $csv1[1] == $csv2[1] == $csv3[1]) {
+			fputs($socket, "MODE ".$ex[2]." -v ".$csv1[1]."\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv1[1].": You have been devoiced 15 seconds for flooding.\n");
+			$voicetime = date('His') + 15;
+			$voiceuser = $csv1[1];
+			fwrite($fp, '');
+		}
+		
+		$csv1[0] = $csv2[0];
+		$csv1[1] = $csv2[1];
+		$csv2[0] = $csv3[0];
+		$csv2[1] = $csv3[1];
+		$csv3[0] = date('His');
+		$csv3[1] = substr($userinfo[0], 1);
+		fwrite($fp, $csv1[0].','.$csv1[1].'\n'.$csv2[0].','.$csv2[1].'\n'.$csv3[0].','.$csv3[1]);
+		
+		fclose($fp);
+		
+		if ($voicetime == date('His')) {
+			fputs($socket, "MODE ".$ex[2]." +v ".$csv1[1]."\n");
+			$voicetime = '';
+		}
+		
 		// Get the value if any
 		$value = str_replace(array(chr(10), chr(13)), '', $ex[5]);
 		if ($value == '@') $value = '';
@@ -66,9 +100,6 @@ while(1) {
 		
 		// Explode the command; useful in many purposes
 		$explode = explode(' ', $command);
-		
-		// Get the user's name; useful in many purposes
-		$userinfo = explode("!", $ex[0]);
 		
 		// Detect if the message was directed toward someone
 		$directionexplode = explode(' @ ', $data);
@@ -123,9 +154,9 @@ while(1) {
 		$direct = strtolower($direct);
 		if ($direct == ':deadbot') {
 			
-			// Attempt to detect excess flooding
+			// Attempt to detect excess flooding and hacking
 			$current = date('ymdHis');
-			if (!(($current - $lastmsg) < 1 && $abuser == $userinfo[0])) {
+			if (!(($current - $lastmsg) < 1 && $abuser == $userinfo[0]) && $recipient[1] != '!') {
 				
 				// Get the commands
 				include 'cmd.php';

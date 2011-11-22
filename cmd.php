@@ -110,7 +110,7 @@ switch ($command) {
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Sorry, the password command will only permit positive integers as lengths. You requested a password that is '".$value."' long.\n");
 		}
-		$password = '';
+		$passwordgen = '';
 		break;
 		
 	case 'welcome':
