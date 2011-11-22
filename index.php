@@ -73,7 +73,7 @@ while(1) {
 			fputs($socket, "MODE ".$ex[2]." -v ".$csv2."\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv2.": You have been devoiced 15 seconds for flooding.\n");
 			$voicetime = date('His') + 15;
-			$voiceuser = $csv1[1];
+			$voiceuser = $csv2;
 			fwrite($fp, '');
 		}
 		
