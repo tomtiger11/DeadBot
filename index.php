@@ -36,6 +36,13 @@ $current = date('ymdHis');
 // Force an endless while
 while(1) {
  
+	// Check if someone needs voicing
+	if ((date('His') - $voicetime) >= 15 && $voicetime != '') {
+		fputs($socket, "MODE ".$voicechnl." +v ".$voiceuser."\n");
+		$voicetime = '';
+		sleep(1);
+	}
+	
 	// Continue the rest of the script here
 	while($data = fgets($socket, 522)) {
 		
@@ -122,17 +129,12 @@ while(1) {
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv2.": You have been devoiced 15 seconds for flooding.\n");
 			$voicetime = date('His') + 15;
 			$voiceuser = $csv2;
+			$voicechnl = $ex[2];
 			fwrite($fp, '');
 			sleep(1);
 		}
 		
 		fclose($fp);
-		
-		if ((date('His') - $voicetime) <= 17 && (date('His') - $voicetime) == 15 && $voicetime != '') {
-			echo "<br>:::Communicating Voice :::<br>";
-			fputs($socket, "MODE ".$ex[2]." +v ".$voiceuser."\n");
-			$voicetime = '';
-		}
 		
 		/*if (isset($this->$user) && $userinfo[0] == ':NickServ') {
 			$adminstatus = explode('STATUS '.$this->$user.' ', $data);
