@@ -59,12 +59,15 @@ while(1) {
 		$userinfo = explode("!", $ex[0]);
 		
 		// General flood protection for #paidhosting
-		$fp = fopen("last.csv", "r");
-		while (!feof($fp) ) {
+		$fp = file_get_contents('last.csv');
+		$fpresult = explode(',', 'last.csv');
+		foreach ($fpresult as $fpvalue) {
 			$count++;
 			$variable = 'csv'.$count;
-			$$variable = fgetcsv($fp, 1024);
+			$$variable = $fpvalue;
 		}
+		
+		$fp = fopen('last.csv', "w");
 		
 		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1[0] - $csv2[0] - $csv3[0]) <= 4 && $csv1[1] == $csv2[1] && $csv[1] == $csv3[1]) {
 			fputs($socket, "MODE ".$ex[2]." -v ".$csv1[1]."\n");
