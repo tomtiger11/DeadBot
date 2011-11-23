@@ -37,11 +37,11 @@ $current = date('ymdHis');
 while(1) {
  
 	// Check if someone needs voicing
-	while ((date('His') - $voicetime) >= 1 && $voicetime != '') {
+	while ((date('His') - $voicetime) >= 10 && $voicetime != '') {
 		echo "\nDEBUG\n";
 		fputs($socket, "MODE ".$voicechnl." +v ".$voiceuser."\n");
-		$voicetime = '';
 		sleep(1);
+		$voicetime = '';
 	}
 	
 	// Continue the rest of the script here
@@ -128,7 +128,7 @@ while(1) {
 		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1 - $csv3 - $csv5) <= 2 && $csv1 == $csv3 && $csv2 == $csv6 && $admin != 1 && (date('His') - ($voicetime + 15)) >= 2) {
 			fputs($socket, "MODE ".$ex[2]." -v ".$csv2."\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv2.": You have been devoiced 15 seconds for flooding.\n");
-			$voicetime = date('His') + 1;
+			$voicetime = date('His');
 			$voiceuser = $csv2;
 			$voicechnl = $ex[2];
 			fwrite($fp, '');
