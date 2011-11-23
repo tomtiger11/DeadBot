@@ -128,7 +128,7 @@ while(1) {
 		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1 - $csv3 - $csv5) <= 2 && $csv1 == $csv3 && $csv2 == $csv6 && $admin != 1 && (date('His') - ($voicetime + 15)) >= 2) {
 			fputs($socket, "MODE ".$ex[2]." -v ".$csv2."\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv2.": You have been devoiced 15 seconds for flooding.\n");
-			$voicetime = date('His') + 15;
+			$voicetime = date('His') + 1;
 			$voiceuser = $csv2;
 			$voicechnl = $ex[2];
 			fwrite($fp, '');
