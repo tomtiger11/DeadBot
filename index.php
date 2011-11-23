@@ -37,8 +37,7 @@ $current = date('ymdHis');
 while(1) {
  
 	// Check if someone needs voicing
-	if ((date('His') - $voicetime) >= 1 && $voicetime != '') {
-		echo "\nDEBUG\n";
+	while ((date('His') - $voicetime) >= 1 && $voicetime != '') {
 		fputs($socket, "MODE ".$voicechnl." +v ".$voiceuser."\n");
 		$voiceuser = NULL;
 		sleep(1);
