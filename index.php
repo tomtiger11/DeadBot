@@ -161,7 +161,7 @@ while(1) {
 		// If the bot was directed at
 		$direct = str_replace(array(chr(10), chr(13)), '', $ex[3]);
 		$direct = strtolower($direct);
-		if ($direct == ':deadbot') {
+		if ($direct == ':deadbot' || $direct == ':db') {
 			
 			// Attempt to detect excess flooding and hacking
 			$current = date('ymdHis');
