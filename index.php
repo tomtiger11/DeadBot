@@ -118,13 +118,15 @@ while(1) {
 		
 		$fp = fopen('last.csv', "w");
 		
-		$csv1 = $csv3;
-		$csv2 = $csv4;
-		$csv3 = $csv5;
-		$csv4 = $csv6;
-		$csv5 = date('His');
-		$csv6 = substr($userinfo[0], 1);
-		fwrite($fp, $csv1.','.$csv2.','.$csv3.','.$csv4.','.$csv5.','.$csv6);
+		if ($ex[2] == '#paidhosting') {
+			$csv1 = $csv3;
+			$csv2 = $csv4;
+			$csv3 = $csv5;
+			$csv4 = $csv6;
+			$csv5 = date('His');
+			$csv6 = substr($userinfo[0], 1);
+			fwrite($fp, $csv1.','.$csv2.','.$csv3.','.$csv4.','.$csv5.','.$csv6);
+		}
 		
 		if ($ex[2] == '#paidhosting' && isset($command) && ($csv1 - $csv3 - $csv5) <= 2 && $csv1 == $csv3 && $csv2 == $csv6 && $admin != 1 && !isset($listentime)) {
 			fputs($socket, "MODE ".$ex[2]." -v ".$csv2."\n");
