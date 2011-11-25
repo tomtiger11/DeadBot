@@ -118,7 +118,7 @@ while(1) {
 		
 		$fp = fopen('last.csv', "w");
 		
-		if ($ex[2] == '#paidhosting') {
+		if ($ex[2] == '#paidhosting' && $ex[1] == 'PRIVMSG') {
 			$csv1 = $csv3;
 			$csv2 = $csv4;
 			$csv3 = $csv5;
