@@ -346,7 +346,7 @@ switch ($command) {
 		$servers = array('jackmunch', 'stoli', 'boru', 'starka', 'chopin', 'lotus');
 		foreach ($servers as $server) {
 			if (!fsockopen($server.'.x10hosting.com', 80)) {
-				if (isset($serveroutput)) {
+				if (isset($serveroutput) || $serveroutput != '') {
 					$serveroutput .= ', '.$server;
 				}else{
 					$serveroutput = $server;
