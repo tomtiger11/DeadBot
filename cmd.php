@@ -356,6 +356,8 @@ switch ($command) {
 			if (file_get_contents($external.'?server='.$server.'&type=ftp') != 'online') {
 				$serveroutput .= $server.' FTP is currently offline. ';
 			}
+			
+			$serveroutput = file_get_contents($external.'?server='.$server.'&type=server');
 		}
 		
 		if (isset($serveroutput)) {
