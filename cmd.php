@@ -345,7 +345,7 @@ switch ($command) {
 	case 'issues':
 		$servers = array('jackmunch', 'stoli', 'boru', 'starka', 'chopin', 'lotus');
 		foreach ($servers as $server) {
-			if (!fsockopen('http://'.$server.'.x10hosting.com', '80', $errno, $errstr, 2)) {
+			if (!fsockopen($server.'.x10hosting.com', '80', $errno, $errstr, 2)) {
 				if (isset($serveroutput)) {
 					$serveroutput .= ', '.$server;
 				}else{
