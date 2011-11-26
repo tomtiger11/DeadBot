@@ -345,7 +345,7 @@ switch ($command) {
 	case 'issues':
 		$servers = array('jackmunch', 'stoli', 'boru', 'starka', 'chopin', 'lotus');
 		foreach ($servers as $server) {
-			if (!file_exists('http://'.$server.'.x10hosting.com/')) {
+			if (!fsockopen('http://'.$server.'.x10hosting.com/', '80', $errno, $errstr, 2)) {
 				if (isset($serveroutput)) {
 					$serveroutput .= ', '.$server;
 				}else{
@@ -359,6 +359,8 @@ switch ($command) {
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": All servers are online.\n");
 		}
+		
+		$serveroutput = '';
 		break;
 		
 	default:
