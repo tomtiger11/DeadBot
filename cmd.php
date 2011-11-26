@@ -350,7 +350,7 @@ switch ($command) {
 			}
 			
 			if (file_get_contents($external.'?server='.$server.'&type=mysql') != 'online') {
-				$serveroutput .= $server.' MySQL is currently offline. ';
+				$serveroutput .= $server.' MySQL is currently \''.file_get_contents($external.'?server='.$server.'&type=mysql').'\'. ';
 			}
 			
 			if (file_get_contents($external.'?server='.$server.'&type=ftp') != 'online') {
@@ -359,7 +359,7 @@ switch ($command) {
 		}
 		
 		if (isset($serveroutput)) {
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$serveroutput." are currently unavailable.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$serveroutput."\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": All servers are online.\n");
 		}
