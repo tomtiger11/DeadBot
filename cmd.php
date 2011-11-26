@@ -346,7 +346,7 @@ switch ($command) {
 		$servers = array('jackmunch', 'stoli', 'boru', 'starka', 'chopin', 'lotus');
 		foreach ($servers as $server) {
 			if (!fsockopen($server.'.x10hosting.com', 80)) {
-				if (isset($serveroutput) || $serveroutput != '') {
+				if (isset($serveroutput)) {
 					$serveroutput .= ', '.$server;
 				}else{
 					$serveroutput = $server;
@@ -354,13 +354,13 @@ switch ($command) {
 			}
 		}
 		
-		if (isset($serveroutput) || $serveroutput != '') {
+		if (isset($serveroutput)) {
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$serveroutput." are currently unavailable.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": All servers are online.\n");
 		}
 		
-		$serveroutput = '';
+		unset($serveroutput);
 		break;
 		
 	default:
