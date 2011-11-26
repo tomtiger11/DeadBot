@@ -7,7 +7,7 @@
 
 // Require the configuration file
 // This should contain the $password
-//require 'config.php';
+require 'config.php';
 
 // Set no time limit; run forever
 set_time_limit(0);
