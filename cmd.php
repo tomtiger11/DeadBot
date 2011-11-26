@@ -342,7 +342,7 @@ switch ($command) {
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate.$calculateinfo."\n");
 		break;
 		
-	/*case 'issues':
+	case 'issues':
 		$servers = array('stoli', 'boru', 'starka', 'chopin', 'lotus');
 		foreach ($servers as $server) {
 			if (file_get_contents($external.'?server='.$server.'&type=server') != 'online') {
@@ -365,7 +365,7 @@ switch ($command) {
 		}
 		
 		unset($serveroutput);
-		break;*/
+		break;
 		
 	default:
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The command you specified was not found. Please type 'deadbot help' if you would like to a see a list of valid commands.\n");
