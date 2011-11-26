@@ -354,7 +354,7 @@ switch ($command) {
 			}
 		}
 		
-		if (isset($serveroutput)) {
+		if (isset($serveroutput) || $serveroutput != '') {
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$serveroutput." are currently unavailable.\n");
 		}else{
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": All servers are online.\n");
