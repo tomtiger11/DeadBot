@@ -343,18 +343,14 @@ switch ($command) {
 		break;
 		
 	case 'issues':
-		$servers = array('stoli', 'boru', 'starka', 'chopin', 'lotus');
+		$servers = array('jackmunch', 'stoli', 'boru', 'starka', 'chopin', 'lotus');
 		foreach ($servers as $server) {
-			if (file_get_contents($external.'?server='.$server.'&type=server') != 'online') {
-				$serveroutput .= $server.' is currently offline. ';
-			}
-			
-			if (file_get_contents($external.'?server='.$server.'&type=mysql') != 'online') {
-				$serveroutput .= $server.' MySQL is currently offline. ';
-			}
-			
-			if (file_get_contents($external.'?server='.$server.'&type=ftp') != 'online') {
-				$serveroutput .= $server.' FTP is currently offline. ';
+			if (!fsockopen($server.'.x10hosting.com', 80)) {
+				if (isset($serveroutput)) {
+					$serveroutput .= ', '.$server;
+				}else{
+					$serveroutput = $server;
+				}
 			}
 		}
 		
