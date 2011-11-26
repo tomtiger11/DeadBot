@@ -342,6 +342,25 @@ switch ($command) {
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate.$calculateinfo."\n");
 		break;
 		
+	case 'issues':
+		$servers = array('jackmunch', 'stoli', 'boru', 'starka', 'chopin', 'lotus');
+		foreach ($servers as $server) {
+			if (!file_exists('http://'.$server.'.x10hosting.com/')) {
+				if (isset($serveroutput)) {
+					$serveroutput .= ', '.$server;
+				}else{
+					$serveroutput = $server;
+				}
+			}
+		}
+		
+		if (isset($serveroutput)) {
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$serveroutput." are currently unavailable.\n");
+		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": All servers are online.\n");
+		}
+		break;
+		
 	default:
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The command you specified was not found. Please type 'deadbot help' if you would like to a see a list of valid commands.\n");
 		break;
