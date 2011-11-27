@@ -349,6 +349,8 @@ switch ($command) {
 		
 		if ($value != '' && isset($serverdetect[1])) {
 			
+			$value[0] = strtoupper($value[0]);
+			
 			if (file_get_contents($external.'?server='.$value.'&type=server') == 'online') {
 				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." HTTP is currently online.\n");
 			}else{
