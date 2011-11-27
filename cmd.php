@@ -371,7 +371,7 @@ switch ($command) {
 		
 		}else{
 			
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Diagnosing servers, please be patient.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Diagnosing servers, please be patient. Although accurancy of the results cannot be guarenteed, this command is fairly accurate.\n");
 			
 			$servers = array('stoli', 'boru', 'starka', 'chopin', 'lotus');
 			foreach ($servers as $server) {
