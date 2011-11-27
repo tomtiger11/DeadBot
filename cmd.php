@@ -347,7 +347,7 @@ switch ($command) {
 		$servers = 'stoli,boru,starka,chopin,lotus,';
 		$serverdetect = explode($value.',', $servers);
 		
-		if (isset($value) && isset($serverdetect[1])) {
+		if ($value != '' && isset($serverdetect[1])) {
 			
 			if (file_get_contents($external.'?server='.$value.'&type=server') == 'online') {
 				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." HTTP is currently online.\n");
