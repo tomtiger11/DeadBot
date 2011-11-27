@@ -343,29 +343,59 @@ switch ($command) {
 		break;
 		
 	case 'issues':
-		$servers = array('stoli', 'boru', 'starka', 'chopin', 'lotus');
-		foreach ($servers as $server) {
-			if (file_get_contents($external.'?server='.$server.'&type=server') != 'online') {
-				$serveroutput .= $server.' is currently offline. ';
-			}
-			
-			if (substr(file_get_contents($external.'?server='.$server.'&type=mysql'), 0, -1) != 'online') {
-				$serveroutput .= $server.' MySQL is currently offline. ';
-			}
-			
-			if (file_get_contents($external.'?server='.$server.'&type=ftp') != 'online') {
-				$serveroutput .= $server.' FTP is currently offline. ';
-			}
-		}
 		
-		if (isset($serveroutput)) {
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$serveroutput."\n");
+		$servers = 'stoli,boru,starka,chopin,lotus,';
+		$serverdetect = explode($value.',', $servers);
+		
+		if (isset($value) && isset($serverdetect)) {
+			
+			if (file_get_contents($external.'?server='.$value.'&type=server') == 'online') {
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." HTTP is currently online.\n");
+			}else{
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." HTTP is currently offline.\n");
+			}
+			
+			if (substr(file_get_contents($external.'?server='.$value.'&type=mysql'), 0, -1) == 'online') {
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." MySQL is currently online.\n");
+			}else{
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." MySQL is currently offline.\n");
+			}
+			
+			if (file_get_contents($external.'?server='.$value.'&type=ftp') == 'online') {
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." FTP is currently online.\n");
+			}else{
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." FTP is currently offline.\n");
+			}
+		
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": All servers are online.\n");
-		}
+			
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Diagnosing servers, please be patient.\n");
+			
+			$servers = array('stoli', 'boru', 'starka', 'chopin', 'lotus');
+			foreach ($servers as $server) {
+				if (file_get_contents($external.'?server='.$server.'&type=server') != 'online') {
+					$serveroutput .= $server.' is currently offline. ';
+				}
+				
+				if (substr(file_get_contents($external.'?server='.$server.'&type=mysql'), 0, -1) != 'online') {
+					$serveroutput .= $server.' MySQL is currently offline. ';
+				}
+				
+				if (file_get_contents($external.'?server='.$server.'&type=ftp') != 'online') {
+					$serveroutput .= $server.' FTP is currently offline. ';
+				}
+			}
 		
-		unset($serveroutput);
-		break;
+			if (isset($serveroutput)) {
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$serveroutput."\n");
+			}else{
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": All servers are online.\n");
+			}
+			
+			unset($serveroutput);
+			break;
+		
+		}
 		
 	default:
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The command you specified was not found. Please type 'deadbot help' if you would like to a see a list of valid commands.\n");
