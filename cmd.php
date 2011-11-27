@@ -83,7 +83,7 @@ switch ($command) {
 		if(isset($valueexploderand[1])) {
 			$value = (int)$value;
 			if (isset($symbolexploderand[1])) {
-				$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!£$%^&*()';
+				$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!ï¿½$%^&*()';
 				$length = 60;
 			}else{
 				$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -131,7 +131,7 @@ switch ($command) {
 				
 			case '3':
 				$lang = 'Spanish';
-				$welcome = '¡Hola';
+				$welcome = 'ï¿½Hola';
 				break;
 				
 			case '4':
@@ -349,8 +349,8 @@ switch ($command) {
 				$serveroutput .= $server.' is currently offline. ';
 			}
 			
-			if (file_get_contents($external.'?server='.$server.'&type=mysql') != 'online') {
-				$serveroutput .= $server.' MySQL is currently \''.file_get_contents($external.'?server='.$server.'&type=mysql').'\'. ';
+			if (substr(file_get_contents($external.'?server='.$server.'&type=mysql'), 0, -1) != 'online') {
+				$serveroutput .= $server.' MySQL is currently offline. ';
 			}
 			
 			if (file_get_contents($external.'?server='.$server.'&type=ftp') != 'online') {
