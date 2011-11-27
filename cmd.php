@@ -347,7 +347,7 @@ switch ($command) {
 		$servers = 'stoli,boru,starka,chopin,lotus,';
 		$serverdetect = explode($value.',', $servers);
 		
-		if (isset($value) && isset($serverdetect)) {
+		if (isset($value) && isset($serverdetect[1])) {
 			
 			if (file_get_contents($external.'?server='.$value.'&type=server') == 'online') {
 				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." HTTP is currently online.\n");
@@ -393,9 +393,10 @@ switch ($command) {
 			}
 			
 			unset($serveroutput);
-			break;
 		
 		}
+		
+		break;
 		
 	default:
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The command you specified was not found. Please type 'deadbot help' if you would like to a see a list of valid commands.\n");
