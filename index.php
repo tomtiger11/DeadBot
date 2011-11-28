@@ -135,8 +135,7 @@ while(1) {
 			$voiceuser = $csv2;
 			$voicechnl = $ex[2];
 			fwrite($fp, '');
-			sleep(15);
-			fputs($socket, "MODE ".$voicechnl." +v ".$voiceuser."\n");
+			sleep(1);
 		}
 		
 		fclose($fp);
