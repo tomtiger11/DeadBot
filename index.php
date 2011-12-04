@@ -1,55 +1,52 @@
 <?php
  
 ##############################
-## DeadBot IRC Bot PHP-Beta ##
-##### Created by Dead-i ######
+## BotNick IRC Bot PHP-Beta ##
+##### Created by tomtiger11 &Dead-i ######
 ##############################
-
-// Require the configuration file
-// This should contain the $password
-require 'config.php';
 
 // Set no time limit; run forever
 set_time_limit(0);
 
+
 // Get the start date incase of status command
+
 $startseconds = time();
 
 // Opening the socket to the freenode network
 $socket = fsockopen("irc.x10hosting.com", 6667);
  
 // Send auth info
-fputs($socket,"USER DeadBot deadi CM :DeadBot\n");
-fputs($socket,"NICK DeadBot\n");
-fputs($socket,"NS IDENTIFY ".$password."\n"); 
+fputs($socket,"USER BotNick tomtiger11 CM :BotNick\n");
+fputs($socket,"NICK BotNick\n");
+fputs($socket,"NS IDENTIFY forkingninja2011\n"); 
 
-// Join channels
-fputs($socket,"JOIN #publicchat\n");
-fputs($socket,"JOIN #paidhosting\n");
-
+// Join channelfputs($socket,"JOIN #paidhosting\n");
+fputs($socket,"JOIN #phstaff phstaff1\n");
 // Get the admin files
 $adminfile = file_get_contents('./admins.txt');
+$admin2 = file_get_contents('./admin2.txt');
+$admin3 = file_get_contents('./admin3.txt');
 $hostmasks = file_get_contents('./hostmasks.txt');
+$staffpass = 'botnickpass';
+mysql_connect('localhost', 'deadi_bots', 'phstaff1');
 
-$current = date('ymdHis');
+mysql_select_db('deadi_bots');
 
 // Force an endless while
 while(1) {
  
-	// Check if someone needs voicing
-	$currentdate = date('His');
-	while (($currentdate - $voicetime) >= 10 && $voicetime != '') {
-		echo "\nDEBUG\n";
-		fputs($socket, "MODE ".$voicechnl." +v ".$voiceuser."\n");
-		sleep(1);
-		$voicetime = '';
-	}
-	
+
+
 	// Continue the rest of the script here
 	while($data = fgets($socket, 522)) {
 		
 		if ($argv[1] == 'debug') {
 			echo nl2br($data);
+$fp = fopen('log.txt', "w");
+fwrite($fp, nl2br($data).'\n');
+fclose($fp);
+
 		}
 		flush();
  
@@ -64,9 +61,6 @@ while(1) {
 		// Say something in the channel
 		$command = str_replace(array(chr(10), chr(13)), '', $ex[4]);
 		
-		// Get the user's name; useful in many purposes
-		$userinfo = explode("!", $ex[0]);
-		
 		// Get the value if any
 		$value = str_replace(array(chr(10), chr(13)), '', $ex[5]);
 		if ($value == '@') $value = '';
@@ -77,7 +71,13 @@ while(1) {
 		if (!isset($value2exploderand[1])) $value2 = '';
 		
 		// Explode the command; useful in many purposes
-		$explode = explode(' ', $command);
+		
+$explode = explode(' ', $command);
+		
+		// Get the user's name; useful in many purposes
+		$userinfo = explode("!", $ex[0]);
+
+
 		
 		// Detect if the message was directed toward someone
 		$directionexplode = explode(' @ ', $data);
@@ -86,9 +86,50 @@ while(1) {
 		}else{
 			$recipient = ":".substr($directionexplode[1], 0, -2);
 		}
+
+
+$userinfo = explode("!", $ex[0]);
+// Auto-voice anyone joining #paidhosting 
+if ($ex[1] == 'JOIN') {  
+If ($userinfo[0] == ':BotNick') {
+mysql_query("UPDATE bots SET online='yes' WHERE title='BotNick';");
+} 
+
+If ($userinfo[0] == ':DeadBot') {
+mysql_query("UPDATE bots SET online='yes' WHERE title='DeadBot';");
+}
+If ($userinfo[0] == ':Delilah') {
+mysql_query("UPDATE bots SET online='yes' WHERE title='Delilah';");
+}
+}
+
+
+If ($ex[1] == 'PART') {
+If ($userinfo[0] == ':BotNick') {
+mysql_query("UPDATE bots SET online='no' WHERE title='BotNick';");
+}
+If ($userinfo[0] == ':DeadBot') {
+mysql_query("UPDATE bots SET online='no' WHERE title='DeadBot';");
+}
+If ($userinfo[0] == ':Delilah') {
+mysql_query("UPDATE bots SET online='no' WHERE title='Delilah';");
+}
+    }
+If ($ex[1] == 'QUIT') {
+If ($userinfo[0] == ':BotNick') {
+mysql_query("UPDATE bots SET online='no' WHERE title='BotNick';");
+}
+If ($userinfo[0] == ':DeadBot') {
+mysql_query("UPDATE bots SET online='no' WHERE title='DeadBot';");
+}
+If ($userinfo[0] == ':Delilah') {
+mysql_query("UPDATE bots SET online='no' WHERE title='Delilah';");
+}
+    }
+
 		
 		// Detect if message is private
-		if ($ex[2] == 'deadbot') {
+		if ($ex[2] == 'botnick') {
 			$ex[2] = substr(strtolower($recipient), 1);
 		}
 		
@@ -96,61 +137,34 @@ while(1) {
 		$hostmask = explode('!', $data);
 		$hostmask = explode('@', $hostmask[1]);
 		$hostmask = explode(' ', $hostmask[1]);
-		$hostmask = $hostmask[0];
+		$hostmask = $hostmask
+
+[0];
 		
 		// Admin detection
 		$adminarray = explode(substr($userinfo[0], 1), $adminfile);
+		$admin21 = explode(substr($userinfo[0], 1), $admin2);
+		$admin31 = explode(substr($userinfo[0], 1), $admin3);
+
 		$hostsarray = explode($hostmask, $hostmasks);
 		if (isset($adminarray[1]) && isset($hostsarray[1])) {
 			$admin = 1;
+		
+
+}else{
+			$admin = 0;
+		}		
+if (isset($admin21[1]) && isset($hostsarray[1])) {
+			$admin = 2;
 		}else{
 			$admin = 0;
-		}
 		
-		// General flood protection for #paidhosting
-		$fp = file_get_contents('last.csv');
-		$fpresult = explode(',', 'last.csv');
-		foreach ($fpresult as $fpvalue) {
-			$count++;
-			$variable = 'csv'.$count;
-			$$variable = $fpvalue;
-		}
-		
-		$fp = fopen('last.csv', "w");
-		
-		if ($ex[2] == '#paidhosting' && $ex[1] == 'PRIVMSG') {
-			$csv1 = $csv3;
-			$csv2 = $csv4;
-			$csv3 = $csv5;
-			$csv4 = $csv6;
-			$csv5 = date('His');
-			$csv6 = substr($userinfo[0], 1);
-			fwrite($fp, $csv1.','.$csv2.','.$csv3.','.$csv4.','.$csv5.','.$csv6);
-		}
-		
-		if ($csv2 != 'last.csv' && $ex[2] == '#paidhosting' && isset($command) && ($csv1 - $csv3 - $csv5) <= 2 && $csv1 == $csv3 && $csv2 == $csv6 && $admin != 1 && !isset($listentime)) {
-			fputs($socket, "MODE ".$ex[2]." -v ".$csv2."\n");
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$csv2.": You have been devoiced 15 seconds for flooding.\n");
-			$voicetime = date('His');
-			$voiceuser = $csv2;
-			$voicechnl = $ex[2];
-			fwrite($fp, '');
-			sleep(1);
-		}
-		
-		fclose($fp);
-		
-		/*if (isset($this->$user) && $userinfo[0] == ':NickServ') {
-			$adminstatus = explode('STATUS '.$this->$user.' ', $data);
-			$adminstatus = $adminstatus[1];
-			$adminstatus = $adminstatus[0];
-			if ($adminstatus == '3') {
-				$admin = 1;
-				$this->$user = NULL;
-			}else{
-				$admin = 0;
-			}
-		}*/
+
+}		if (isset($admin31[1]) && isset($hostsarray[1])) {
+			$admin = 3;
+		}else{
+			$admin = 0;
+		}		
 		
 		// Get the entire command
 		$entirecommandraw = explode(' :', $data);
@@ -159,26 +173,29 @@ while(1) {
 		
 		// Get the start message for each command
 		$startmsg = "PRIVMSG ".$ex[2]." ".$recipient.":";
-		
+
 		// If the bot was directed at
 		$direct = str_replace(array(chr(10), chr(13)), '', $ex[3]);
 		$direct = strtolower($direct);
-		if ($direct == ':deadbot' || $direct == ':db') {
+		if ($direct == ':botnick') {
 			
-			// Attempt to detect excess flooding and hacking
-			$current = date('ymdHis');
-			if (!(($current - $lastmsg) < 1 && $abuser == $userinfo[0]) && $recipient[1] != '!') {
-				
-				// Get the commands
-				include 'cmd.php';
-				
-			// End of flooding detection
-			}
-			$lastmsg = date('ymdHis');
-			$abuser = $userinfo[0];
+			// Attempt to detect excess flooding
+
+$current = date('ymdHis');
+if (!(($current - $lastmsg) < 1 && $abuser == $userinfo[0])) {
+// Get the commands
+if(strtolower($userinfo[0]) != ':zachary') { 
+If ($hostmasks != '*windstream.net') {if ($recipient[1] != '!' || $recipient[1] != '/') { include 'cmd.php'; }
+}}
+// End of flooding detection
+}			
+$lastmsg = date('ymdHis');			
+$abuser = $userinfo[0];
+										// Attempt to detect excess flooding 
 			
 		}
-		
+
+ 		
 		// Get the sayings
 		include 'sayings.php';
 		
@@ -187,8 +204,8 @@ while(1) {
 			$content = explode('echo ', $data);
 			$content = $content[1];
 			if ($ex[3] == ':echo') {
-				if ($ex[2] != '#publicchat') {
-					fputs($socket, "PRIVMSG #publicchat :".$content."\n");
+				if ($ex[2] != '#paidhosting') {
+					fputs($socket, "PRIVMSG #paidhosting :".$content."\n");
 				}
 			}
 		}
@@ -198,22 +215,17 @@ while(1) {
 			$content = explode('raw ', $data);
 			$content = $content[1];
 			if ($ex[3] == ':raw') {
-				if ($ex[2] != '#publicchat') {
+				if ($ex[2] != '#tomtiger11') {
 					fputs($socket, $content."\n");
 				}
 			}
 		}
 		
-		// If DeadBot is kicked
+		// If BotNick is kicked
 		$kick = explode('KICK', $data);
 		if (isset($kick[1])) {
 			$kickedby = explode('!', $data);
-			fputs($socket,"JOIN #publicchat\n");
-		}
-		
-		// If DeadBot gets a permission denied error
-		if ($ex[2] == 'DeadBot' && ($ex[3] == ':Permission' || $ex[3] == ':Access')) {
-			fputs($socket,"PRIVMSG ".$channel." :I was instructed to run a command that I could not perform; I had insufficient priviledges on the specific channel.\n");
+			fputs($socket,"JOIN #paidhosting\n");
 		}
 		
 	}

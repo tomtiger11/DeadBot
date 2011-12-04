@@ -1,39 +1,24 @@
 <?php
 switch ($command) {
 
-	case 'help':
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the valid commands that can be performed on me. Start all commands with 'deadbot'.\n");
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": about, status, calc, random, date, password, welcome, gsearch, gresult, translate\n");
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": For additional help please visit my GitHub page. For admin commands use 'deadbot adminhelp.\n");
-		break;
+	case 'help':		if($value == "dice"){  fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": End 'botnick dice' with a space and '10' for a 10 sided dice, or '20' for 2 10 sided dice, or '100' for a 100 sided dice.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": For Example, 'botnick dice 100' would roll a 100 sided dice.\n");}else{	if ($admin != 0) $helpadmin = ' For a list of admin commands type, "botnick adminhelp".';
+		
+				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the valid commands that can be performed on me. Start all commands with 'botnick'.\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": about, status, calc, random, date, password, welcome, gsearch, gresult, translate, roulette, dice\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": For additional help please visit my GitHub page.".$helpadmin."\n");
+}		break;
 		
 	case 'adminhelp':
-		if ($admin == 1) {
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the valid commands accessible by administrators only.\n");
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": trust (n), addadmin (n), viewadmins (n), deleteadmin (n), shutdown (n), restart (n), sync (n), echo (pm), raw (pm)\n");
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": (n) = Can be run from within channel or private message. (pm) = Must be run through private message.\n");
+		if ($admin != 0) {
+			fputs($socket, "PRIVMSG ".substr($recipient, 1)." Here are the valid commands accessible by administrators only.\n");
+			fputs($socket, "PRIVMSG ".substr($recipient, 1)." trust (n), warn (n), op (n), ban (n), kick (n), deop (n), addadmin (n), viewadmins (n), deleteadmin (n), shutdown (n), restart (n), sync (n), echo (pm), raw (pm)\n");
+			fputs($socket, "PRIVMSG ".substr($recipient, 1)." (n) = Can be run from within channel or private message. (pm) = Must be run through private message.\n");
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
 		}
 		break;
-		
-	case 'op':
-	case 'deop':
-	case 'halfop':
-	case 'dehalfop':
-	case 'voice':
-	case 'devoice':
-	case 'kick':
-	case 'ban':
-		if ($admin == 1) {
-			if ($value == '') $value = substr($userinfo[0], 1);
-			fputs($socket, "CS ".$command." ".$ex[2]." ".$value."\n");
-		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
-		}
-		$channel = $ex[2];
-		break;
-		
+	
 	case 'status':
 		$timeonline = time() - $startseconds;
 		$days = $timeonline / 86400;
@@ -46,8 +31,8 @@ switch ($command) {
 		break;
 			
 	case 'about':
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": My name is DeadBot, and I am currently under development by Dead-i.\n");
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": You can control me by starting commands with 'deadbot'. For example, 'deadbot about'.\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": My name is BotNick, and I am currently under development by Tomtiger11 & Dead-i. GtoXic has NOT helped with this bot!\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": You can control me by starting commands with 'botnick'. For example, 'botnick about'.\n");
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Find out more, report issues, and view my source: https://github.com/Dead-i/DeadBot\n");
 		break;
 		
@@ -75,44 +60,7 @@ switch ($command) {
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": In the timezone specified, it is now ".date('l jS F h:i:s a')." (".date_default_timezone_get().").\n");
 		break;
 		
-	case 'password':
-		if ($value == '') $value = '7';
-		$valueexploderand = explode($value[0], '1234567890');
-		$symbolexploderand = explode('sym', $data);
-		$integerexploderand = explode('int', $data);
-		if(isset($valueexploderand[1])) {
-			$value = (int)$value;
-			if (isset($symbolexploderand[1])) {
-				$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!ï¿½$%^&*()';
-				$length = 60;
-			}else{
-				$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-				$length = 51;
-			}
-			
-			if (isset($integerexploderand[1])) {
-				$string = $string.'123456789';
-				$length = $length + 9;
-			}
-			
-			if ($value < 24) {
-				$count = 0;
-				while ($count < $value) {
-					$random = rand(0, $length);
-					$passwordgen = $passwordgen.$string[$random];
-					$count = $count + 1;
-				}
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The requested password has been private messaged to you.\n");
-				fputs($socket, "PRIVMSG ".substr($recipient, 1)." :Randomly chosen pasword in which is ".$value." characters long: ".$passwordgen."\n");
-			}else{
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The requested password is too long. Please shorten it.\n");
-			}
-		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Sorry, the password command will only permit positive integers as lengths. You requested a password that is '".$value."' long.\n");
-		}
-		$passwordgen = '';
-		break;
-		
+	case 'password':		if ($value == '') $value = '7';		$valueexploderand = explode($value[0], '1234567890');		$symbolexploderand = explode('sym', $data);		$integerexploderand = explode('int', $data);		if(isset($valueexploderand[1])) {			$value = (int)$value;			if (isset($symbolexploderand[1])) {				$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!£$%^&*()';				$length = 60;			}else{				$string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';				$length = 51;			}			if (isset($integerexploderand[1])) {				$string = $string.'123456789';				$length = $length + 9;			}			if ($value < 24) {				$count = 0;				while ($count < $value) {					$random = rand(0, $length);					$passwordgen = $passwordgen.$string[$random];					$count = $count + 1;				}				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The requested password has been private messaged to you.\n");				fputs($socket, "PRIVMSG ".substr($recipient, 1)." :Randomly chosen pasword in which is ".$value." characters long: ".$passwordgen."\n");			}else{				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The requested password is too long. Please shorten it.\n");			}		}else{			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Sorry, the password command will only permit positive integers as lengths. You requested a password that is '".$value."' long.\n");		}		$passwordgen = '';		break;		
 	case 'welcome':
 		date_default_timezone_set('Europe/London');
 		$languageid = rand(1, 12);
@@ -131,12 +79,12 @@ switch ($command) {
 				
 			case '3':
 				$lang = 'Spanish';
-				$welcome = 'ï¿½Hola';
+				$welcome = '¡Hola';
 				break;
 				
 			case '4':
 				$lang = 'German';
-				$welcome = 'Guten tag';
+				$welcome = 'Hallo';
 				break;
 				
 			case '5':
@@ -181,20 +129,27 @@ switch ($command) {
 				
 		}
 		
-		if ($admin == 1) $welcomeadmin = ' You are an administrator of DeadBot.';
+		if ($admin != 0) $welcomeadmin = ' You are an administrator of BotNick.';
 		
 		$welcomehost = explode('!', $data);
 		$welcomehost = explode(' ', $welcomehost[1]);
 		$welcomehost = $welcomehost[0];
 		
 		fputs($socket, "PRIVMSG ".$ex[2]." :".$welcome.", ".substr($recipient, 1)."! Right now it is ".date('l jS F h:i:s a')." in ".date_default_timezone_get().". Your full name and host mask is ".$welcomehost.".".$welcomeadmin."\n");
-		fputs($socket, "PRIVMSG ".$ex[2]." :And guess what? You just learned how to say hello in ".$lang."! For help here, type 'Bubba help'. To control me, please use 'DeadBot help'.\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." :And guess what? You just learned how to say hello in ".$lang."! To control me, please use 'botnick help'.\n");
 		break;
 		
-	case 'gsearch':
+	
+case 'gsearch':
+
 		$term = explode('gsearch ', $data);
+
 		$term = $term[1];
+
+		$term = explode(' @', $term);
+		$term = $term[0];
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": http://www.google.co.uk/search?q=".substr(urlencode($term), 0, -6)."\n");
+
 		break;
 		
 	case 'gresult':
@@ -213,113 +168,133 @@ switch ($command) {
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": http://translate.google.co.uk/#".$value."|".$value2."|".urlencode($value3)."\n");
 		break;
 		
-	case 'addadmin':
-		if ($admin == 1) {
-			$fp = fopen('admins.txt', "w");
-			fwrite($fp, substr($adminfile, 0, -1).$value.',');
-			fclose($fp);
-			$adminfile = file_get_contents('./admins.txt');
-			$hostmasks = file_get_contents('./hostmasks.txt');
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been successfully added to the admin log.\n");
+	
+case 'addadmin':
+
+
+
+		if($value2 == "") {
+$value2 = 1;
+}	
+	if ($admin == 2 || $admin == 3) {
+
+	if($value2 == 1) {
+	$fp = fopen('admins.txt', "w");
+
+	fwrite($fp, substr($adminfile, 0, -1).$value.',');
+
+ }}
+		if ($admin == 3) {
+		if ($value2 = 2) {
+		$fp = fopen('admin2.txt', "w");
+
+	fwrite($fp, substr($admin2, 0, -1).$value.',');
+}}
+
+	if ($admin == 3) {
+	if($value2 = 3) {
+	$fp = fopen('admin3.txt', "w");
+
+	fwrite($fp, substr($admin3, 0, -1).$value.',');
+
+}}
+fclose($fp);
+	If($admin == 2 || $admin == 3) {fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been successfully added to the admin log. Please run sync to activate this user.\n");
+
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": You have been given administrative privledges. Do not abuse it or your privledges will be removed.\n");
-		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+
+	}else{	
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
 		}
-		break;
+	break;
+
 		
 	case 'viewadmins':
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the current administrators of DeadBot:\n");
+
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Here are the current administrators of BotNick:\n");
+
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".str_replace(',', ', ', $adminfile)."\n");
-		break;
+	
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".str_replace(',', ', ', $admin2)."\n");
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".str_replace(',', ', ', $admin3)."\n");
+	break;
 		
 	case 'deleteadmin':
 		if ($admin == 1) {
 			$fp = fopen('admins.txt', "w");
 			fwrite($fp, str_replace($value.',', '', $adminfile));
 			fclose($fp);
-			$adminfile = file_get_contents('./admins.txt');
-			$hostmasks = file_get_contents('./hostmasks.txt');
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been deleted from the admin log.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been deleted from the admin log. Please run sync to deactivate this account.\n");
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": If you did something bad, shame on you! :P\n");
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
 		}
 		break;
 		
 	case 'trust':
-		if (isset($adminarray[1]) && $value == $staffpass) {
-			$fp = fopen('hostmasks.txt', "w");
+		 if (isset($adminarray[1]) || isset($admin21) || isset($admin31) && $value == $staffpass) {			$fp = fopen('hostmasks.txt', "w");
 			fwrite($fp, $hostmasks.$hostmask.',');
 			fclose($fp);
-			$adminfile = file_get_contents('./admins.txt');
-			$hostmasks = file_get_contents('./hostmasks.txt');
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Your hostmask will now be trusted. You have been identified as an administrator.\n");
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
 		}
 		break;
 		
 	case 'sync':
-		if ($admin == 1) {
+		if ($admin != 0) {
 			$adminfile = file_get_contents('./admins.txt');
-			$hostmasks = file_get_contents('./hostmasks.txt');
+			
+$admin2 = file_get_contents('./admin2');			
+$admin3 = file_get_contents('./admin3.txt');			$hostmasks = file_get_contents('./hostmasks.txt');
 			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Admin levels synchronized.\n");
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
 		}
 		break;
 		
 	case 'shutdown':
-		if ($admin == 1) {
+		if ($admin == 3) {
 			fputs($socket, "PRIVMSG ".$ex[2]." :Goodbye!\n");
+			mysql_query("UPDATE bots SET online='no' WHERE title='BotNick';");
 			fputs($socket, "QUIT :Requested by administrator\n");
 			die;
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
 		}
 		break;
 		
 	case 'restart':
-		if ($admin == 1) {
+		if ($admin != 0 || $admin != 1) {
 			fputs($socket, "PRIVMSG ".$ex[2]." :I will now attempt to restart myself.\n");
 			fputs($socket, "QUIT :Restarting as requested by administrator\n");
-			shell_exec('screen php /home/kloxo/httpd/default/irc/index.php');
+			shell_exec('screen php /home/admin/tom4u/bot/index.php');
 			sleep(2);
 			die;
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
 		}
 		break;
 		
 	case 'debug':
-		if ($admin == 1) {
+		if ($admin != 0 || $admin != 1) {
 			if ($argv[1] == 'debug') {
 				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Switching debug mode to OFF\n");
 				fputs($socket, "QUIT :Requested by administrator\n");
-				shell_exec('screen php /home/kloxo/httpd/default/irc/index.php');
+				shell_exec('screen php /home/admin/tom4u/bot/index.php');
 				sleep(2);
 				die;
 			}else{
 				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Switching debug mode to ON\n");
 				fputs($socket, "QUIT :Requested by administrator\n");
-				shell_exec('screen php /home/kloxo/httpd/default/irc/index.php debug');
+				shell_exec('screen php /home/admin/tom4u/bot/index.php debug');
 				sleep(2);
 				die;
 			}
 		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
 		}
-		break;
-		
-	case 'update':
-		if ($admin == 1) {
-			echo shell_exec('cd /home/kloxo/httpd/default/irc/; /usr/local/bin/git pull');
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Synchronized with GitHub. A restart is recommended if the core file was modified.\n");
-		}else{
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the DeadBot administrators have the ability to run that command. Please ask him if you would like this command to be run.\n");
-		}
-		break;
-		
+		break;		
 	case 'calc':
 		$calculate = explode('calc ', $data);
 		$calculate = $calculate[1];
@@ -342,66 +317,166 @@ switch ($command) {
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$calculate.$calculateinfo."\n");
 		break;
 		
-	case 'issues':
-		
-		$servers = 'stoli,boru,starka,chopin,lotus,';
-		$serverdetect = explode($value.',', $servers);
-		
-		if ($value != '' && isset($serverdetect[1])) {
-			
-			$value[0] = strtoupper($value[0]);
-			
-			if (file_get_contents($external.'?server='.$value.'&type=server') == 'online') {
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." HTTP is currently online.\n");
-			}else{
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." HTTP is currently offline.\n");
-			}
-			
-			if (substr(file_get_contents($external.'?server='.$value.'&type=mysql'), 0, -1) == 'online') {
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." MySQL is currently online.\n");
-			}else{
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." MySQL is currently offline.\n");
-			}
-			
-			if (file_get_contents($external.'?server='.$value.'&type=ftp') == 'online') {
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." FTP is currently online.\n");
-			}else{
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$value." FTP is currently offline.\n");
-			}
-		
-		}else{
-			
-			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Diagnosing servers, please be patient. Although accurancy of the results cannot be guarenteed, this command is fairly accurate.\n");
-			
-			$servers = array('stoli', 'boru', 'starka', 'chopin', 'lotus');
-			foreach ($servers as $server) {
-				if (file_get_contents($external.'?server='.$server.'&type=server') != 'online') {
-					$serveroutput .= $server.' is currently offline. ';
-				}
-				
-				if (substr(file_get_contents($external.'?server='.$server.'&type=mysql'), 0, -1) != 'online') {
-					$serveroutput .= $server.' MySQL is currently offline. ';
-				}
-				
-				if (file_get_contents($external.'?server='.$server.'&type=ftp') != 'online') {
-					$serveroutput .= $server.' FTP is currently offline. ';
-				}
-			}
-		
-			if (isset($serveroutput)) {
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": ".$serveroutput."\n");
-			}else{
-				fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": All servers are online.\n");
-			}
-			
-			unset($serveroutput);
-		
+	case 'op':
+		if ($admin != 0) {			if ($value == '') $value = substr($userinfo[0], 1);
+
+			fputs($socket,"CS OP ".$ex[2]." ".$value."\n");		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
 		}
+		break;		
+	
+
 		
+	
+		
+	case 'ban':
+		if ($admin != 0) {
+			fputs($socket,"CS BAN ".$ex[2]." ".$value." Banned By BotNick - Operator Requested\n");		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
+		}
 		break;
 		
-	default:
-		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The command you specified was not found. Please type 'deadbot help' if you would like to a see a list of valid commands.\n");
+	case 'kick':
+		if ($admin != 0) {
+			fputs($socket,"CS KICK ".$ex[2]." ".$value." Kicked By BotNick - Operator Requested\n");		}else{
+			fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n");
+		}
+		break;
+
+
+
+	
+
+case 'warn':
+
+if($value == "tomtiger11"){
+fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": You can't ban the bot owner from the channel!\n");
+}else{
+if($value == "Sharky"){
+fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Don't ban tomtiger11's friend!\n");
+}else{
+if($value == "Dead-i"){
+fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": You can't ban the channel owner from the channel!\n");
+}else{
+if($value == $recipient){
+fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Don't be stupid and try to get yourself banned and then get BotNick banned... -.-\n");
+}else{
+$warn = file_get_contents('./warn.txt');
+
+$fp = fopen('warn.txt', "w");
+
+fwrite($fp, $warn.$value.',');
+
+fclose($fp);
+
+$warnarray = explode($value.',', $warn);
+
+if (isset($warnarray[2])) {
+
+// Since we changed the warn since last time, we need to get the latest copy
+
+$warn = file_get_contents('./warn.txt');
+
+$resultfile = str_replace($value.',', '', $warn);
+
+$fp = fopen('warn.txt', "w");
+
+fwrite($fp, $resultfile);
+
+fclose($fp);
+
+fputs($socket,"CS BAN ".$ex[2]." ".$value." Banned by Channel Operator - You were warned three times\n");
+
+}else{
+
+fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": You have been warned by a Channel Operator or a BotNick Administrator. Please note: 3 warns = 1 ban\n");
+
+}}}}}
+break;
+
+case 'protect': 
+case 'deprotect': 
+case 'deop': 
+case 'halfop': 
+case 'dehalfop': 
+case 'voice': 
+case 'devoice': 
+if ($admin != 0
+) { 
+if ($value == '') $value = substr($userinfo[0], 1); 
+fputs($socket, "CS ".$command." ".$ex[2]." ".$value."\n"); 
+
+ }else{ 
+     fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Only the BotNick administrators have the ability to run that command.\n"); 
+    } 
+$channel = $ex[2];
+  break;
+
+case 'dice':
+
+if($value == ""){ $value = 6; }
+if($value == 6){
+		$random = rand(1, 6);
+
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: $random\n");
+		break;
+
+
+}
+if($value == 10){
+		$random = rand(1, 10);
+
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: $random\n");
+		break;
+
+
+}
+if($value == 20){
+		$random = rand(1, 20);
+
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: $random\n");
+		break;
+
+
+}
+if($value == 100){
+		$random = rand(1, 100);
+
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: $random\n");
+		break;
+
+
+}
+case 'roulette':
+
+
+		$random1 = rand(1, 2);
+
+
+if($random1 == 1){
+if($roulette == 6){
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: 4,0BANG!\n");
+
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: BotNick Reloads and spins the chamber.\n");
+}else{
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: 9,0Click!\n");
+$roulette = $roulette + 1;}
+}
+if($random1 == 2){
+
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: 4,0BANG!\n");
+
+fputs($socket, "PRIVMSG {$ex[2]} $recipient: BotNick Reloads and spins the chamber.\n");
+$roulette = 0;}
+break;
+	
+case 'updatewebsite':    if ($admin == 3) { echo shell_exec('cd /home/admin/paidhosting/site/; git pull origin master'); fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Website has been synchronized with GitHub.\n"); }		break;
+				
+	
+case 'whoami':
+fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": Your Hostmask is ".$hostmask." and you are level ".$admin."\n");		break;
+default:
+		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The command you specified was not found. Please type 'botnick help' if you would like to a see a list of valid commands.\n");
 		break;
 		
 }
