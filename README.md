@@ -128,17 +128,11 @@ directory in which your files are in.
 6. Ensure that shell_exec is enabled in your php.ini and ensure that 'screen'
 is installed on your system.
 
-7. Create a file named 'config.php'. Edit this file with the following
-(replacing the value of $staffpass accordingly):
-```
-<?php
-$staffpass = "EDIT THIS WITH YOUR STAFF PASSWORD";
-?>
-```
+7. Now you need to configure DeadBot, Luckily tomtiger11 has made an installer! To do this, login to your SSH terminal and cd into the directory which
+your files are in. Run this command and follow all of the instructions: ``php installer.php``
 
 8. You should now be able to start the bot up and solve any problems that may
-occur. To do this, login to your SSH terminal and cd into the directory which
-your files are in. Run this command: ``screen php index.php``
+occur.  Run this command: ``screen php index.php``
 
 You can also run in debug mode:
 ``screen php index.php debug``
