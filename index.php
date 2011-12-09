@@ -178,7 +178,7 @@ if (isset($admin21[1]) && isset($hostsarray[1])) {
 		$direct = str_replace(array(chr(10), chr(13)), '', $ex[3]);
 		$direct = strtolower($direct);
 		if ($direct == ':botnick') {
-			
+	$valuelow = strtolower ($value);				
 			// Attempt to detect excess flooding
 
 $current = date('ymdHis');
@@ -200,7 +200,7 @@ $abuser = $userinfo[0];
 		include 'sayings.php';
 		
 		// Admin echo command
-		if ($admin == 1) {
+		if ($admin != 0 || $admin != 1 || $admin != 2) {
 			$content = explode('echo ', $data);
 			$content = $content[1];
 			if ($ex[3] == ':echo') {
@@ -211,11 +211,11 @@ $abuser = $userinfo[0];
 		}
 		
 		// Admin raw command
-		if ($admin == 1) {
+		if ($admin != 0 || $admin != 1 || $admin != 2) {
 			$content = explode('raw ', $data);
 			$content = $content[1];
 			if ($ex[3] == ':raw') {
-				if ($ex[2] != '#tomtiger11') {
+				if ($ex[2] != '#paidhosting') {
 					fputs($socket, $content."\n");
 				}
 			}
