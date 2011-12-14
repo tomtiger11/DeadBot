@@ -1,7 +1,7 @@
 <?php
  
 ##############################
-## BotNick IRC Bot PHP-Beta ##
+## DeadBot IRC Bot PHP-Beta ##
 ##### Created by tomtiger11 &Dead-i ######
 ##############################
 
@@ -14,14 +14,14 @@ set_time_limit(0);
 $startseconds = time();
 
 // Opening the socket to the freenode network
-$socket = fsockopen("irc.x10hosting.com", 6667);
+$socket = fsockopen($server, $port;
  
 // Send auth info
-fputs($socket,"USER BotNick tomtiger11 CM :BotNick\n");
-fputs($socket,"NICK BotNick\n");
-fputs($socket,"NS IDENTIFY forkingninja2011\n"); 
+fputs($socket,"USER {$nick} {$name} CM :{$nick}\n");
+fputs($socket,"NICK {$nick}\n");
+fputs($socket,"NS IDENTIFY {$pass}\n"); 
 
-// Join channelfputs($socket,"JOIN #paidhosting\n");
+// Join channelfputs($socket,"JOIN {$channels}\n");
 fputs($socket,"JOIN #phstaff phstaff1\n");
 // Get the admin files
 $adminfile = file_get_contents('./admins.txt');
@@ -29,9 +29,6 @@ $admin2 = file_get_contents('./admin2.txt');
 $admin3 = file_get_contents('./admin3.txt');
 $hostmasks = file_get_contents('./hostmasks.txt');
 $staffpass = 'botnickpass';
-mysql_connect('localhost', 'deadi_bots', 'phstaff1');
-
-mysql_select_db('deadi_bots');
 
 // Force an endless while
 while(1) {
@@ -89,43 +86,6 @@ $explode = explode(' ', $command);
 
 
 $userinfo = explode("!", $ex[0]);
-// Auto-voice anyone joining #paidhosting 
-if ($ex[1] == 'JOIN') {  
-If ($userinfo[0] == ':BotNick') {
-mysql_query("UPDATE bots SET online='yes' WHERE title='BotNick';");
-} 
-
-If ($userinfo[0] == ':DeadBot') {
-mysql_query("UPDATE bots SET online='yes' WHERE title='DeadBot';");
-}
-If ($userinfo[0] == ':Delilah') {
-mysql_query("UPDATE bots SET online='yes' WHERE title='Delilah';");
-}
-}
-
-
-If ($ex[1] == 'PART') {
-If ($userinfo[0] == ':BotNick') {
-mysql_query("UPDATE bots SET online='no' WHERE title='BotNick';");
-}
-If ($userinfo[0] == ':DeadBot') {
-mysql_query("UPDATE bots SET online='no' WHERE title='DeadBot';");
-}
-If ($userinfo[0] == ':Delilah') {
-mysql_query("UPDATE bots SET online='no' WHERE title='Delilah';");
-}
-    }
-If ($ex[1] == 'QUIT') {
-If ($userinfo[0] == ':BotNick') {
-mysql_query("UPDATE bots SET online='no' WHERE title='BotNick';");
-}
-If ($userinfo[0] == ':DeadBot') {
-mysql_query("UPDATE bots SET online='no' WHERE title='DeadBot';");
-}
-If ($userinfo[0] == ':Delilah') {
-mysql_query("UPDATE bots SET online='no' WHERE title='Delilah';");
-}
-    }
 
 		
 		// Detect if message is private
@@ -204,7 +164,7 @@ $abuser = $userinfo[0];
 			$content = explode('echo ', $data);
 			$content = $content[1];
 			if ($ex[3] == ':echo') {
-				if ($ex[2] != '#paidhosting') {
+				if ($ex[2] != $channels) {
 					fputs($socket, "PRIVMSG #paidhosting :".$content."\n");
 				}
 			}
@@ -215,7 +175,7 @@ $abuser = $userinfo[0];
 			$content = explode('raw ', $data);
 			$content = $content[1];
 			if ($ex[3] == ':raw') {
-				if ($ex[2] != '#paidhosting') {
+				if ($ex[2] != $channels) {
 					fputs($socket, $content."\n");
 				}
 			}
@@ -225,7 +185,7 @@ $abuser = $userinfo[0];
 		$kick = explode('KICK', $data);
 		if (isset($kick[1])) {
 			$kickedby = explode('!', $data);
-			fputs($socket,"JOIN #paidhosting\n");
+			fputs($socket,"JOIN {$channels}\n");
 		}
 		
 	}
