@@ -56,6 +56,9 @@ of the requested value; also known as Google's "I'm feeling Lucky" service.
 service where the third value will be translated from the first value to the
 second value. For example, ``deadbot translate en es Hello``
 
+**poll**: This, followed by either ``yes`` or ``no`` will cast a vote, in your name to the bot
+only when the poll function is ON. The poll function is turned on by admins.
+
 Did you know that you can direct commands at people other than yourself? To do
 this, place the @ symbol at the end of your command followed by the designated
 recipient. For example, ``deadbot about @ Dead-i``
@@ -100,6 +103,8 @@ the value in the channel.
 **raw**: This command can only be run via private message and will instruct
 DeadBot to send a completely raw command (value).
 
+**poll**: This command, followed by ``on`` will turn the poll function ON.
+The command, followed by ``off`` will turn the poll function OFF.
 ## License ##
 If you want to use my software, then feel free to do whatever you want with
 it. However, please keep the GitHub link on the about page if you do use it -
