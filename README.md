@@ -120,7 +120,7 @@ modifying DeadBot accordingly.
 2. Ensure that shell_exec is enabled in your php.ini and ensure that 'screen'
 is installed on your system.
 
-3. Now you need to configure DeadBot, Luckily tomtiger11 has made an installer! To do this, login to your SSH terminal and cd into the directory which
+3. Now you need to configure DeadBot, Luckily I (tomtiger11) have made an installer! To configure DeadBot this, login to your SSH terminal and cd into the directory which
 your files are in. Run this command and follow all of the instructions: ``php installer.php``
 
 4. You should now be able to start the bot up and solve any problems that may

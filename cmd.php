@@ -348,12 +348,25 @@ switch ($command)
 	case
 	
 	'deleteadmin':
-	if ($admin == 1)
-	{
+	if ($admin == 1) {
+	
+	if ($value == 1) {
 		$fp = fopen('admins.txt', "w");
 		fwrite($fp, str_replace($value.',', '', $adminfile));
 		fclose($fp);
-		
+	}
+	
+	if ($value == 2) {
+		$fp = fopen('admin2.txt', "w");
+		fwrite($fp, str_replace($value.',', '', $admin2));
+		fclose($fp);
+	}
+	
+	if ($value == 3) {
+		$fp = fopen('admin3.txt', "w");
+		fwrite($fp, str_replace($value.',', '', $admin3));
+		fclose($fp);
+	}
 		
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The user '".$value."' has been deleted from the admin log. Please run sync to deactivate this account.\n");
 		fputs($socket, "PRIVMSG ".$ex[2]." ".$value.": If you did something bad, shame on you! :P\n");
