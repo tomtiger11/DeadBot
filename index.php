@@ -1,9 +1,9 @@
 <?php
  
-##############################
-## DeadBot IRC Bot PHP-Beta ##
-##### Created by tomtiger11 &Dead-i ######
-##############################
+###########################################
+######## DeadBot IRC Bot PHP-Beta #########
+##### Created by tomtiger11 & Dead-i ######
+###########################################
 
 // Set no time limit; run forever
 set_time_limit(0);
@@ -14,21 +14,22 @@ set_time_limit(0);
 $startseconds = time();
 
 // Opening the socket to the freenode network
-$socket = fsockopen($server, $port;
+$socket = fsockopen($server, $port);
  
+//Getting Functions
+require "functions.php";
 // Send auth info
 fputs($socket,"USER {$nick} {$name} CM :{$nick}\n");
 fputs($socket,"NICK {$nick}\n");
 fputs($socket,"NS IDENTIFY {$pass}\n"); 
 
 // Join channelfputs($socket,"JOIN {$channels}\n");
-fputs($socket,"JOIN #phstaff phstaff1\n");
+fputs($socket,"JOIN {$channels}\n");
 // Get the admin files
 $adminfile = file_get_contents('./admins.txt');
 $admin2 = file_get_contents('./admin2.txt');
 $admin3 = file_get_contents('./admin3.txt');
 $hostmasks = file_get_contents('./hostmasks.txt');
-$staffpass = 'botnickpass';
 
 // Force an endless while
 while(1) {
@@ -97,9 +98,7 @@ $userinfo = explode("!", $ex[0]);
 		$hostmask = explode('!', $data);
 		$hostmask = explode('@', $hostmask[1]);
 		$hostmask = explode(' ', $hostmask[1]);
-		$hostmask = $hostmask
-
-[0];
+		$hostmask = $hostmask[0];
 		
 		// Admin detection
 		$adminarray = explode(substr($userinfo[0], 1), $adminfile);
@@ -137,23 +136,22 @@ if (isset($admin21[1]) && isset($hostsarray[1])) {
 		// If the bot was directed at
 		$direct = str_replace(array(chr(10), chr(13)), '', $ex[3]);
 		$direct = strtolower($direct);
-		if ($direct == ':botnick') {
+		if ($direct == $prefix) {
 	$valuelow = strtolower ($value);				
 			// Attempt to detect excess flooding
 
 $current = date('ymdHis');
 if (!(($current - $lastmsg) < 1 && $abuser == $userinfo[0])) {
 // Get the commands
-if(strtolower($userinfo[0]) != ':zachary') { 
-If ($hostmasks != '*windstream.net') {if ($recipient[1] != '!' || $recipient[1] != '/') { include 'cmd.php'; }
-}}
+if ($recipient[1] != '!' || $recipient[1] != '/') { include 'cmd.php'; }
+}
 // End of flooding detection
 }			
 $lastmsg = date('ymdHis');			
 $abuser = $userinfo[0];
 										// Attempt to detect excess flooding 
 			
-		}
+		
 
  		
 		// Get the sayings
@@ -165,7 +163,7 @@ $abuser = $userinfo[0];
 			$content = $content[1];
 			if ($ex[3] == ':echo') {
 				if ($ex[2] != $channels) {
-					fputs($socket, "PRIVMSG #paidhosting :".$content."\n");
+					fputs($socket, "PRIVMSG {$channels} :".$content."\n");
 				}
 			}
 		}
