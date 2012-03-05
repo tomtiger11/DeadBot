@@ -920,4 +920,4 @@ break;
 default:
 fputs($socket, "PRIVMSG ".$ex[2]." ".$recipient.": The command you specified was not found. Please type 'botnick help' if you would like to a see a list of valid commands.\n");
 		break;
-}
+} 
