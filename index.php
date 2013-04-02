@@ -33,21 +33,15 @@ $hostmasks = file_get_contents('./hostmasks.txt');
 
 // Force an endless while
 while(1) {
- 
-
-
 	// Continue the rest of the script here
 	while($data = fgets($socket, 522)) {
-		
 		if ($argv[1] == 'debug') {
 			echo nl2br($data);
-$fp = fopen('log.txt', "w");
-fwrite($fp, nl2br($data).'\n');
-fclose($fp);
-
+			$fp = fopen('log.txt', "w");
+			fwrite($fp, nl2br($data).'\n');
+			fclose($fp);
 		}
 		flush();
- 
 		// Separate all data
 		$ex = explode(' ', $data);
  
@@ -55,7 +49,6 @@ fclose($fp);
 		if($ex[0] == "PING"){
 			fputs($socket, "PONG ".$ex[1]."\n");
 		}
-		
 		// Say something in the channel
 		$command = str_replace(array(chr(10), chr(13)), '', $ex[4]);
 		
@@ -69,14 +62,9 @@ fclose($fp);
 		if (!isset($value2exploderand[1])) $value2 = '';
 		
 		// Explode the command; useful in many purposes
-		
-$explode = explode(' ', $command);
-		
+		$explode = explode(' ', $command);
 		// Get the user's name; useful in many purposes
 		$userinfo = explode("!", $ex[0]);
-
-
-		
 		// Detect if the message was directed toward someone
 		$directionexplode = explode(' @ ', $data);
 		if (!isset($directionexplode[1])) {
@@ -84,13 +72,9 @@ $explode = explode(' ', $command);
 		}else{
 			$recipient = ":".substr($directionexplode[1], 0, -2);
 		}
-
-
-$userinfo = explode("!", $ex[0]);
-
-		
+		$userinfo = explode("!", $ex[0]);
 		// Detect if message is private
-		if ($ex[2] == 'botnick') {
+		if ($ex[2] == $nick) {
 			$ex[2] = substr(strtolower($recipient), 1);
 		}
 		
@@ -108,23 +92,19 @@ $userinfo = explode("!", $ex[0]);
 		$hostsarray = explode($hostmask, $hostmasks);
 		if (isset($adminarray[1]) && isset($hostsarray[1])) {
 			$admin = 1;
-		
-
-}else{
+		}else{
 			$admin = 0;
 		}		
-if (isset($admin21[1]) && isset($hostsarray[1])) {
+		if (isset($admin21[1]) && isset($hostsarray[1])) {
 			$admin = 2;
 		}else{
 			$admin = 0;
-		
-
-}		if (isset($admin31[1]) && isset($hostsarray[1])) {
+		}
+		if (isset($admin31[1]) && isset($hostsarray[1])) {
 			$admin = 3;
 		}else{
 			$admin = 0;
 		}		
-		
 		// Get the entire command
 		$entirecommandraw = explode(' :', $data);
 		$entirecommandraw = $entirecommandraw[1];
@@ -137,26 +117,19 @@ if (isset($admin21[1]) && isset($hostsarray[1])) {
 		$direct = str_replace(array(chr(10), chr(13)), '', $ex[3]);
 		$direct = strtolower($direct);
 		if ($direct == $prefix) {
-	$valuelow = strtolower ($value);				
-			// Attempt to detect excess flooding
-
-$current = date('ymdHis');
-if (!(($current - $lastmsg) < 1 && $abuser == $userinfo[0])) {
-// Get the commands
-if ($recipient[1] != '!' || $recipient[1] != '/') { include 'cmd.php'; }
-}
-// End of flooding detection
-}			
-$lastmsg = date('ymdHis');			
-$abuser = $userinfo[0];
-										// Attempt to detect excess flooding 
-			
-		
-
- 		
+		$valuelow = strtolower ($value);		
+		// Attempt to detect excess flooding	
+		$current = date('ymdHis');
+		if (!(($current - $lastmsg) < 1 && $abuser == $userinfo[0])) {
+		// Get the commands
+		if ($recipient[1] != '!' || $recipient[1] != '/') { include 'cmd.php'; }
+		}
+		// End of flooding detection
+		}			
+		$lastmsg = date('ymdHis');			
+		$abuser = $userinfo[0];
 		// Get the sayings
-		include 'sayings.php';
-		
+		include 'sayings.php';		
 		// Admin echo command
 		if ($admin != 0 || $admin != 1 || $admin != 2) {
 			$content = explode('echo ', $data);
@@ -167,7 +140,6 @@ $abuser = $userinfo[0];
 				}
 			}
 		}
-		
 		// Admin raw command
 		if ($admin != 0 || $admin != 1 || $admin != 2) {
 			$content = explode('raw ', $data);
@@ -178,15 +150,12 @@ $abuser = $userinfo[0];
 				}
 			}
 		}
-		
 		// If BotNick is kicked
 		$kick = explode('KICK', $data);
 		if (isset($kick[1])) {
 			$kickedby = explode('!', $data);
 			fputs($socket,"JOIN {$channels}\n");
 		}
-		
 	}
- 
 }
 ?>
